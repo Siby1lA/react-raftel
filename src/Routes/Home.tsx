@@ -2,20 +2,18 @@
 import { useQuery } from "react-query";
 import { getAnime, getBannerAnime, getTopAnime, IGetAnimeResult } from "../api";
 import styled from "styled-components";
-import { motion, AnimatePresence, useViewportScroll } from "framer-motion";
-import { useState } from "react";
 import Slider from "../components/Slider";
 
 const Wrapper = styled.div`
   height: 100%;
 `;
-const Banner = styled.div<{ bgPhoto: string }>`
+const Banner = styled.div<{ bgphoto: string }>`
   display: flex;
   align-items: center;
   height: 70vh;
   padding: 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), #0a1622),
-    url(${(props) => props.bgPhoto});
+    url(${(props) => props.bgphoto});
   background-size: cover;
 `;
 
@@ -52,7 +50,7 @@ function App() {
       ) : (
         <>
           <Banner
-            bgPhoto={
+            bgphoto={
               "https://image.api.playstation.com/vulcan/ap/rnd/202106/1112/WvnvSUm2jwosrZa0ZP30I4F2.jpg"
             }
           >
@@ -65,9 +63,10 @@ function App() {
               ></Iframe>
             </BannerWrap>
           </Banner>
-
-          <Slider data={animes} title="Animes"></Slider>
-          <Slider data={topAnime} title="Top Animes"></Slider>
+          <div style={{ padding: "20px" }}>
+            <Slider data={animes} title="Animes"></Slider>
+            <Slider data={topAnime} title="Top Animes"></Slider>
+          </div>
         </>
       )}
     </Wrapper>

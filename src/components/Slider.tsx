@@ -3,8 +3,8 @@ import { useState } from "react";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const Box = styled(motion.div)<{ bgPhoto: string }>`
-  background-image: url(${(props) => props.bgPhoto});
+const Box = styled(motion.div)<{ bgphoto: string }>`
+  background-image: url(${(props) => props.bgphoto});
   background-size: cover;
   height: 225px;
   width: 150px;
@@ -31,22 +31,18 @@ const Sliders = styled.div``;
 const Row = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(8, 1fr);
+  position: absolute;
   width: 100%;
-
-  overflow: hidden;
-`;
-const AniContents = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 const SliderWrap = styled.div`
   background-color: #152232;
-  margin: 20px;
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 20px;
+  position: relative;
+  height: 300px;
+  overflow: hidden;
 `;
 
 const ListName = styled.h2`
@@ -87,7 +83,17 @@ const BigMovie = styled(motion.div)`
   overflow: hidden;
   background-color: #152232;
 `;
-
+const rowVariants = {
+  hidden: {
+    x: window.outerWidth + 5,
+  },
+  visible: {
+    x: 0,
+  },
+  exit: {
+    x: -window.outerWidth - 5,
+  },
+};
 function Slider({ data, title }: any) {
   const bigMovieMatch: PathMatch<string> | null = useMatch("/animes/:id");
   const [index, setIndex] = useState(0);
@@ -141,28 +147,29 @@ function Slider({ data, title }: any) {
         </SlideBtn>
       </ListName>
       <Sliders>
-        <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-          <Row key={index}>
+        <AnimatePresence>
+          <Row
+            key={index}
+            variants={rowVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={{ type: "tween", duration: 1 }}
+          >
             {data?.data
               .slice(offset * index, offset * index + offset)
               .map((anime: any) => (
-                <AniContents key={anime.mal_id}>
-                  <Box
-                    layoutId={anime.mal_id}
-                    onClick={() => onBoxClicked(anime.mal_id)}
-                    whileHover="hover"
-                    initial="normal"
-                    transition={{ type: "tween" }}
-                    bgPhoto={anime.images.jpg.image_url}
-                  >
-                    <h4>{anime.title}</h4>
-                  </Box>
-                </AniContents>
+                <Box
+                  key={anime.mal_id}
+                  onClick={() => onBoxClicked(anime.mal_id)}
+                  bgphoto={anime.images.jpg.image_url}
+                >
+                  <h4>{anime.title}</h4>
+                </Box>
               ))}
           </Row>
         </AnimatePresence>
       </Sliders>
-      <AnimatePresence></AnimatePresence>
     </SliderWrap>
   );
 }
