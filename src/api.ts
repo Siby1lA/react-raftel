@@ -33,6 +33,12 @@ export function getAnime() {
   return fetch(`${BASE_PATH}/anime`).then((response) => response.json());
 }
 
+export function getAnimeInfo(animeId: string) {
+  return fetch(`${BASE_PATH}/anime/${animeId}`).then((response) =>
+    response.json()
+  );
+}
+
 export function getTopAnime() {
   return fetch(`${BASE_PATH}/top/anime`).then((response) => response.json());
 }
@@ -43,4 +49,10 @@ export function getRandomAnime() {
 
 export function getBannerAnime() {
   return fetch(`${BASE_PATH}/anime/38000`).then((response) => response.json());
+}
+
+export function getAnimeVoice(animeId: string) {
+  return fetch(`${BASE_PATH}/anime/${animeId}/characters`).then((response) =>
+    response.json()
+  );
 }

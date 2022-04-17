@@ -1,11 +1,12 @@
-import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { PathMatch, useMatch, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { anmieInfo } from "../atoms";
 
 const Box = styled(motion.div)<{ bgphoto: string }>`
   background-image: url(${(props) => props.bgphoto});
-  background-size: cover;
   height: 225px;
   width: 150px;
   background-position: center center;
@@ -63,26 +64,6 @@ const SlideBtn = styled.div`
   }
 `;
 
-const Overlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-`;
-
-const BigMovie = styled(motion.div)`
-  position: absolute;
-  width: 1080px;
-  height: 80vh;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  border-radius: 15px;
-  overflow: hidden;
-  background-color: #152232;
-`;
 const rowVariants = {
   hidden: {
     x: window.outerWidth + 5,
@@ -94,10 +75,9 @@ const rowVariants = {
     x: -window.outerWidth - 5,
   },
 };
+
 function Slider({ data, title }: any) {
-  const bigMovieMatch: PathMatch<string> | null = useMatch("/animes/:id");
   const [index, setIndex] = useState(0);
-  const { scrollY } = useViewportScroll();
   const incraseIndex = (val: string) => {
     if (val === "add") {
       const totalAnimes = data?.data.length;
@@ -110,12 +90,12 @@ function Slider({ data, title }: any) {
   };
   const offset = 8;
   const navigate = useNavigate();
-  const [leaving, setLeaving] = useState(false);
-  const toggleLeaving = () => setLeaving((prev) => !prev);
+  const setAnimeData = useSetRecoilState(anmieInfo);
   const onBoxClicked = (animeId: number) => {
     navigate(`/animes/${animeId}`);
+    setAnimeData(animeId);
   };
-  const onOverlayClick = () => navigate("/");
+
   return (
     <SliderWrap>
       <ListName>
@@ -161,6 +141,8 @@ function Slider({ data, title }: any) {
               .map((anime: any) => (
                 <Box
                   key={anime.mal_id}
+                  layoutId={anime.mal_id + ""}
+                  transition={{ type: "tween" }}
                   onClick={() => onBoxClicked(anime.mal_id)}
                   bgphoto={anime.images.jpg.image_url}
                 >

@@ -1,9 +1,17 @@
-/* eslint-disable jsx-a11y/iframe-has-title */
 import { useQuery } from "react-query";
-import { getAnime, getBannerAnime, getTopAnime, IGetAnimeResult } from "../api";
+import {
+  getAnime,
+  getAnimeInfo,
+  getAnimeVoice,
+  getBannerAnime,
+  getTopAnime,
+  IGetAnimeResult,
+} from "../api";
 import styled from "styled-components";
 import Slider from "../components/Slider";
-
+import Modal from "../components/Modal";
+import { anmieInfo } from "../atoms";
+import { useRecoilValue } from "recoil";
 const Wrapper = styled.div`
   height: 100%;
 `;
@@ -17,13 +25,9 @@ const Banner = styled.div<{ bgphoto: string }>`
   background-size: cover;
 `;
 
-const BannerTitle = styled.div`
-  color: white;
-  font-size: 38px;
-`;
-
 const BannerWrap = styled.div`
   margin-left: 30px;
+  margin-top: 20px;
 `;
 const Iframe = styled.iframe`
   border: 1px solid white;
@@ -42,7 +46,15 @@ function App() {
     "banneranime",
     getBannerAnime
   );
-
+  const info = useRecoilValue(anmieInfo);
+  const { data: animeInfos } = useQuery(
+    info ? ["animeinfo", info] : "",
+    () => info && getAnimeInfo(info ? String(info) : "")
+  );
+  const { data: animeVoices } = useQuery(
+    info ? ["animevocie", info] : "",
+    () => info && getAnimeVoice(info ? String(info) : "")
+  );
   return (
     <Wrapper>
       {isLoading && tl && bl ? (
@@ -55,7 +67,6 @@ function App() {
             }
           >
             <BannerWrap>
-              <BannerTitle>{bannerAnime.data.title}</BannerTitle>
               <Iframe
                 width="690"
                 height="390"
@@ -67,6 +78,7 @@ function App() {
             <Slider data={animes} title="Animes"></Slider>
             <Slider data={topAnime} title="Top Animes"></Slider>
           </div>
+          <Modal info={animeInfos} voice={animeVoices}></Modal>
         </>
       )}
     </Wrapper>
