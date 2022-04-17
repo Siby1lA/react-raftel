@@ -2,10 +2,12 @@ import { useQuery } from "react-query";
 import {
   getAnime,
   getAnimeInfo,
-  getAnimeVoice,
+  getAnimeChara,
   getBannerAnime,
   getTopAnime,
   IGetAnimeResult,
+  IGetCharaResult,
+  IAnime,
 } from "../api";
 import styled from "styled-components";
 import Slider from "../components/Slider";
@@ -46,14 +48,14 @@ function App() {
     "banneranime",
     getBannerAnime
   );
-  const info = useRecoilValue(anmieInfo);
-  const { data: animeInfos } = useQuery(
+  const info = useRecoilValue<any>(anmieInfo);
+  const { data: animeInfos } = useQuery<IAnime>(
     info ? ["animeinfo", info] : "",
-    () => info && getAnimeInfo(info ? String(info) : "")
+    () => info && getAnimeInfo(info ? info : "")
   );
-  const { data: animeVoices } = useQuery(
+  const { data: animeVoices } = useQuery<IGetCharaResult>(
     info ? ["animevocie", info] : "",
-    () => info && getAnimeVoice(info ? String(info) : "")
+    () => info && getAnimeChara(info ? info : "")
   );
   return (
     <Wrapper>

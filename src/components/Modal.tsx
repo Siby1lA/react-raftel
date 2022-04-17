@@ -118,7 +118,9 @@ function Modal({ info, voice }: any) {
                 </div>
                 <div>
                   {voice?.data.map((voice: any) => (
-                    <div style={{ color: "red" }}>{voice.character.name}</div>
+                    <div key={voice.character.mal_id} style={{ color: "red" }}>
+                      {voice.character.name}
+                    </div>
                   ))}
                 </div>
                 {/* [0].character.name */}
