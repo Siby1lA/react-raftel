@@ -8,6 +8,7 @@ import {
   IGetAnimeResult,
   IGetCharaResult,
   IAnime,
+  getAiringAnime,
 } from "../api";
 import styled from "styled-components";
 import Slider from "../components/Slider";
@@ -40,6 +41,10 @@ function App() {
     "animes",
     getAnime
   );
+  const { data: aring, isLoading: al } = useQuery<IGetAnimeResult>(
+    "airinganimes",
+    getAiringAnime
+  );
   const { data: topAnime, isLoading: tl } = useQuery<IGetAnimeResult>(
     "topanime",
     getTopAnime
@@ -59,7 +64,7 @@ function App() {
   );
   return (
     <Wrapper>
-      {isLoading && tl && bl ? (
+      {isLoading && tl && bl && al ? (
         <div>Loading...</div>
       ) : (
         <>
@@ -72,13 +77,14 @@ function App() {
               <Iframe
                 width="690"
                 height="390"
-                src={bannerAnime.data.trailer.embed_url}
+                src={bannerAnime ? bannerAnime.data.trailer.embed_url : ""}
               ></Iframe>
             </BannerWrap>
           </Banner>
           <div style={{ padding: "20px" }}>
-            <Slider data={animes} title="Animes"></Slider>
+            <Slider data={aring} title="Aring animes"></Slider>
             <Slider data={topAnime} title="Top Animes"></Slider>
+            <Slider data={animes} title="Animes"></Slider>
           </div>
           <Modal info={animeInfos} voice={animeVoices}></Modal>
         </>

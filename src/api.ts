@@ -44,6 +44,21 @@ export interface IChara {
       name: string;
       url: string;
     };
+    voice_actors: [
+      {
+        person: {
+          mal_id: number;
+          url: string;
+          images: {
+            jpg: {
+              image_url: string;
+            };
+          };
+          name: string;
+        };
+        language: string;
+      }
+    ];
   };
 }
 
@@ -69,8 +84,8 @@ export function getTopAnime() {
   return fetch(`${BASE_PATH}/top/anime`).then((response) => response.json());
 }
 
-export function getRandomAnime() {
-  return fetch(`${BASE_PATH}/random/anime`).then((response) => response.json());
+export function getAiringAnime() {
+  return fetch(`${BASE_PATH}/seasons/now`).then((response) => response.json());
 }
 
 export function getBannerAnime() {

@@ -16,8 +16,8 @@ const Overlay = styled(motion.div)`
 
 const AnimeInfo = styled(motion.div)`
   position: absolute;
-  width: 1080px;
-  height: 80vh;
+  width: 80%;
+  height: 85vh;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -32,6 +32,9 @@ const Iframe = styled.iframe`
 
 const ModalWrap = styled.div`
   color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 const Banner = styled.div<{ bgphoto: string }>`
   display: flex;
@@ -45,23 +48,92 @@ const Banner = styled.div<{ bgphoto: string }>`
   background-size: cover;
   background-position: center center;
 `;
-const BannerTitle = styled.div`
-  font-size: 38px;
-  font-weight: 500;
+
+const CharaImg = styled(motion.div)<{ bgphoto: string }>`
+  background-image: url(${(props) => props.bgphoto});
+  height: 225px;
+  width: 160px;
+  background-position: center center;
+  background-size: cover;
+  border-radius: 10px;
+  border: 2px solid #0a1622;
+  margin: 10px;
+`;
+
+const AnimeContent = styled.div`
+  display: flex;
+  padding: 30px;
+`;
+
+const LeftContents = styled.div`
+  background-color: #152232;
+  padding: 25px;
+  height: fit-content;
+  border-radius: 10px;
+  margin-right: 15px;
+  margin-bottom: 20px;
+  div {
+    margin-bottom: 10px;
+    width: 150px;
+  }
+  span {
+    font-weight: 400;
+  }
+`;
+
+const RightContes = styled.div`
+  width: fit-content;
 `;
 
 const Rank = styled.div`
-  position: absolute;
-  left: 0;
-  top: 0;
-  margin-top: 10px;
-  margin-left: 20px;
-  font-size: 28px;
-  font-weight: 500;
-  color: red;
+  font-size: 16px;
+  :first-child {
+    color: red;
+    font-weight: 400;
+    font-size: 18px;
+  }
 `;
 
-const Title = styled.div``;
+const Title = styled.h2`
+  margin: 15px 0px;
+  font-size: 30px;
+  font-weight: 400;
+`;
+
+const Synopsis = styled.div`
+  h3 {
+    font-weight: 400;
+    font-size: 22px;
+  }
+`;
+const CharaVoice = styled.h3`
+  margin-top: 15px;
+  font-weight: 400;
+  font-size: 22px;
+`;
+const Chara = styled.div`
+  width: fit-content;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+`;
+
+const Charas = styled.div`
+  background-color: #152232;
+  margin: 15px;
+  padding: 10px;
+  border-radius: 10px;
+`;
+
+const CharaImgWrap = styled.div`
+  display: flex;
+`;
+
+const CharaName = styled.div`
+  display: flex;
+  justify-content: space-around;
+  color: white;
+`;
+
 function Modal({ info, voice }: any) {
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
@@ -76,7 +148,6 @@ function Modal({ info, voice }: any) {
   if (clickedAnime) {
     document.body.style.overflow = "hidden";
   }
-  //   console.log(voice.data[0].character.name);
   return (
     <AnimatePresence>
       {bigAnimeMatch ? (
@@ -92,38 +163,110 @@ function Modal({ info, voice }: any) {
           >
             {clickedAnime && info && voice && (
               <ModalWrap>
-                <Banner bgphoto={info.data.trailer.images.large_image_url}>
-                  <Rank>Rank #{info.data.rank}</Rank>
-                  <BannerTitle>
-                    <Title>{info.data.title}</Title>
-                  </BannerTitle>
+                <Banner
+                  bgphoto={
+                    info.data.trailer &&
+                    info.data.trailer.images.large_image_url
+                  }
+                >
                   <Iframe
-                    width="535"
-                    height="300"
-                    src={info.data.trailer.embed_url}
+                    width="690"
+                    height="390"
+                    src={info.data.trailer ? info.data.trailer.embed_url : ""}
                   ></Iframe>
                 </Banner>
-
-                <div>{info.data.rating}</div>
-                <div>Synopsis: {info.data.synopsis}</div>
-                <div>
-                  <div>Status{info.data.status}</div>
-                  <div>Format{info.data.type}</div>
-                  <div>Genre{info.data.genres[0].name}</div>
-                  <div>Duration{info.data.duration}</div>
-                  <div>Source{info.data.source}</div>
-                  <div>Popularity{info.data.popularity}</div>
-                  <div>Favorites{info.data.favorites}</div>
-                  <div>Studios{info.data.studios[0].name}</div>
-                </div>
-                <div>
-                  {voice?.data.map((voice: any) => (
-                    <div key={voice.character.mal_id} style={{ color: "red" }}>
-                      {voice.character.name}
+                <AnimeContent>
+                  <LeftContents>
+                    <div>
+                      <div>
+                        ⭐️ Score:
+                        <span> {info.data.score}</span>
+                      </div>
+                      <div>
+                        ❤️ Popularity:
+                        <span> {info.data.popularity}</span>
+                      </div>
+                      <div>
+                        Status
+                        <br />
+                        <span>{info.data.status}</span>
+                      </div>
+                      <div>
+                        Format
+                        <br />
+                        <span>{info.data.type}</span>
+                      </div>
+                      <div>
+                        Genre
+                        <br />
+                        <span>
+                          {info.data.genres[0] && info.data.genres[0].name}
+                        </span>
+                      </div>
+                      <div>
+                        Duration
+                        <br />
+                        <span>{info.data.duration}</span>
+                      </div>
+                      <div>
+                        Source
+                        <br />
+                        <span>{info.data.source}</span>
+                      </div>
+                      <div>
+                        Favorites
+                        <br />
+                        <span>{info.data.favorites}</span>
+                      </div>
+                      <div style={{ marginBottom: "-10px" }}>
+                        Studio
+                        <br />
+                        <span>{info.data.studios[0].name}</span>
+                      </div>
                     </div>
-                  ))}
-                </div>
-                {/* [0].character.name */}
+                  </LeftContents>
+
+                  <RightContes>
+                    <Rank>Rank #{info.data.rank}</Rank>
+                    <Rank>{info.data.rating}</Rank>
+                    <Title>{info.data.title}</Title>
+
+                    <Synopsis>
+                      <h3>Synopsis:</h3>
+                      <span>{info.data.synopsis}</span>
+                    </Synopsis>
+
+                    <CharaVoice>Chara</CharaVoice>
+                    <Chara>
+                      {voice &&
+                        voice?.data.map((voice: any) => (
+                          <Charas key={voice.character.mal_id}>
+                            <CharaImgWrap>
+                              <CharaImg
+                                bgphoto={voice.character.images.jpg.image_url}
+                              ></CharaImg>
+                              <CharaImg
+                                bgphoto={
+                                  voice.voice_actors[0] &&
+                                  voice.voice_actors[0].person.images.jpg
+                                    .image_url
+                                }
+                              ></CharaImg>
+                            </CharaImgWrap>
+
+                            <CharaName>
+                              <div>{voice.character.name}</div>
+                              <div>
+                                {voice.voice_actors[0] &&
+                                  voice.voice_actors[0].person.name}
+                              </div>
+                              {/* {voice.role} */}
+                            </CharaName>
+                          </Charas>
+                        ))}
+                    </Chara>
+                  </RightContes>
+                </AnimeContent>
               </ModalWrap>
             )}
           </AnimeInfo>
