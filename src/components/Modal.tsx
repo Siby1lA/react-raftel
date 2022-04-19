@@ -166,8 +166,9 @@ function Modal({ info, voice }: any) {
               <ModalWrap>
                 <Banner
                   bgphoto={
-                    info.data.trailer &&
-                    info.data.trailer.images.large_image_url
+                    info.data.trailer
+                      ? info.data.trailer.images.large_image_url
+                      : ""
                   }
                 >
                   <Iframe
@@ -222,7 +223,9 @@ function Modal({ info, voice }: any) {
                       <div style={{ marginBottom: "-10px" }}>
                         Studio
                         <br />
-                        <span>{info.data.studios[0].name}</span>
+                        <span>
+                          {info.data.studios[0] && info.data.studios[0].name}
+                        </span>
                       </div>
                     </div>
                   </LeftContents>

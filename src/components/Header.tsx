@@ -1,10 +1,11 @@
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { anmieInfo, animeSearch } from "../atoms";
-import { useSetRecoilState } from "recoil";
+import { animeSearch } from "../atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useQuery } from "react-query";
+import { getAnimeSearch } from "../api";
+import SearchList from "./SearchList";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -74,6 +75,24 @@ const Input = styled(motion.input)`
   border: none;
 `;
 
+const List = styled(motion.div)`
+  position: absolute;
+  right: 0;
+  margin-right: 60px;
+  top: 53px;
+  background-color: #152232;
+  width: 280px;
+  height: 300px;
+`;
+
+const SearchTyping = styled(motion.div)`
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-top: 52px;
+  margin-right: 60px;
+`;
+
 const navVariants = {
   top: {
     backgroundColor: "rgba(0, 0, 0, 0)",
@@ -83,16 +102,17 @@ const navVariants = {
   },
 };
 
-interface IForm {
-  keyword: string;
-}
-
 function Header() {
+  const infoSearch = useRecoilValue<any>(animeSearch);
+  const { data: animeSearchs } = useQuery(
+    infoSearch ? ["animeserach", infoSearch] : "",
+    () => infoSearch && getAnimeSearch(infoSearch ? infoSearch : "")
+  );
   const [searchOpen, setSerachOpen] = useState(false);
   const { scrollY } = useViewportScroll();
-  const navigate = useNavigate();
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
+  const ListAnimation = useAnimation();
   useEffect(() => {
     scrollY.onChange(() => {
       if (scrollY.get() > 80) {
@@ -103,16 +123,22 @@ function Header() {
     });
   }, [scrollY, navAnimation]);
 
-  const { register, handleSubmit } = useForm<IForm>();
   const setAnimeData = useSetRecoilState(animeSearch);
-  const onValid = (data: any) => {
-    // navigate(`animes?q=${data.keyword}`);
-    setAnimeData(data.keyword);
+  const onChange = (e: any) => {
+    setAnimeData(e.target.value);
   };
-
+  const onSubmit = (e: any) => {
+    e.preventDefault();
+  };
+  const onBlur = (e: any) => {
+    setAnimeData("");
+  };
   const toggleSearch = () => {
     if (searchOpen) {
       // trigger the close animation
+      ListAnimation.start({
+        scaleX: 0,
+      });
       inputAnimation.start({
         scaleX: 0,
       });
@@ -128,14 +154,13 @@ function Header() {
     <Nav variants={navVariants} animate={navAnimation} initial={"top"}>
       <Col>
         <Logo>RAFTEL</Logo>
-
         <Items>
           <Item>Chara</Item>
           <Item>Song</Item>
         </Items>
       </Col>
       <Col>
-        <Search onSubmit={handleSubmit(onValid)}>
+        <Search onSubmit={onSubmit}>
           <motion.svg
             onClick={toggleSearch}
             animate={{ x: searchOpen ? -245 : 0 }}
@@ -151,13 +176,25 @@ function Header() {
             ></path>
           </motion.svg>
           <Input
-            {...register("keyword", { required: true, minLength: 2 })}
+            onChange={onChange}
+            onBlur={onBlur}
             animate={inputAnimation}
             initial={{ scaleX: 0 }}
             transition={{ type: "linear" }}
             placeholder="Search for Animation"
+            autoComplete="off"
           />
         </Search>
+        <List
+          animate={ListAnimation}
+          initial={{ scaleX: 0 }}
+          transition={{ type: "linear" }}
+        ></List>
+        {animeSearchs ? (
+          <SearchTyping>
+            <SearchList data={animeSearchs}></SearchList>
+          </SearchTyping>
+        ) : null}
       </Col>
     </Nav>
   );

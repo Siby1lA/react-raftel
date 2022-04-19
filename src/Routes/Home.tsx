@@ -16,12 +16,14 @@ import Slider from "../components/Slider";
 import Modal from "../components/Modal";
 import { anmieInfo, animeSearch } from "../atoms";
 import { useRecoilValue } from "recoil";
+import SearchList from "../components/SearchList";
 const Wrapper = styled.div`
   height: 100%;
 `;
 const Banner = styled.div<{ bgphoto: string }>`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 70vh;
   padding: 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), #0a1622),
@@ -30,6 +32,7 @@ const Banner = styled.div<{ bgphoto: string }>`
 `;
 
 const BannerWrap = styled.div`
+  display: flex;
   margin-left: 30px;
   margin-top: 20px;
 `;
@@ -64,11 +67,6 @@ function App() {
     () => info && getAnimeChara(info ? info : "")
   );
 
-  const infoSearch = useRecoilValue<any>(animeSearch);
-  const { data: animeSearchs } = useQuery(
-    infoSearch ? ["animeserach", infoSearch] : "",
-    () => infoSearch && getAnimeSearch(infoSearch ? infoSearch : "")
-  );
   return (
     <Wrapper>
       {isLoading && tl && bl && al ? (
@@ -89,9 +87,6 @@ function App() {
             </BannerWrap>
           </Banner>
           <div style={{ padding: "20px" }}>
-            {animeSearchs && (
-              <Slider data={animeSearchs} title="Search"></Slider>
-            )}
             <Slider data={aring} title="Aring animes"></Slider>
             <Slider data={topAnime} title="Top Animes"></Slider>
             <Slider data={animes} title="Animes"></Slider>

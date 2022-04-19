@@ -64,17 +64,17 @@ const SlideBtn = styled.div`
   }
 `;
 
-const rowVariants = {
-  hidden: {
-    x: window.outerWidth + 5,
-  },
-  visible: {
-    x: 0,
-  },
-  exit: {
-    x: -window.outerWidth - 5,
-  },
-};
+// const rowVariants = {
+//   hidden: {
+//     x: window.outerWidth + 5,
+//   },
+//   visible: {
+//     x: 0,
+//   },
+//   exit: {
+//     x: -window.outerWidth - 5,
+//   },
+// };
 
 function Slider({ data, title }: any) {
   const [index, setIndex] = useState(0);
@@ -126,33 +126,31 @@ function Slider({ data, title }: any) {
           </svg>
         </SlideBtn>
       </ListName>
-      {data ? (
-        <Sliders>
-          <AnimatePresence>
-            <Row
-              key={index}
-              // variants={rowVariants}
-              // initial="hidden"
-              // animate="visible"
-              // exit="exit"
-              transition={{ type: "tween", duration: 1 }}
-            >
-              {data &&
-                data?.data
-                  .slice(offset * index, offset * index + offset)
-                  .map((anime: any) => (
-                    <Box
-                      key={anime.mal_id}
-                      onClick={() => onBoxClicked(anime.mal_id)}
-                      bgphoto={anime.images.jpg.image_url}
-                    >
-                      <h4>{anime.title}</h4>
-                    </Box>
-                  ))}
-            </Row>
-          </AnimatePresence>
-        </Sliders>
-      ) : null}
+      <Sliders>
+        <AnimatePresence>
+          <Row
+            key={index}
+            // variants={rowVariants}
+            // initial="hidden"
+            // animate="visible"
+            // exit="exit"
+            transition={{ type: "tween", duration: 1 }}
+          >
+            {data?.data &&
+              data?.data
+                .slice(offset * index, offset * index + offset)
+                .map((anime: any) => (
+                  <Box
+                    key={anime.mal_id}
+                    onClick={() => onBoxClicked(anime.mal_id)}
+                    bgphoto={anime.images.jpg.image_url}
+                  >
+                    <h4>{anime.title}</h4>
+                  </Box>
+                ))}
+          </Row>
+        </AnimatePresence>
+      </Sliders>
     </SliderWrap>
   );
 }
