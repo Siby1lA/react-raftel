@@ -9,11 +9,12 @@ import {
   IGetCharaResult,
   IAnime,
   getAiringAnime,
+  getAnimeSearch,
 } from "../api";
 import styled from "styled-components";
 import Slider from "../components/Slider";
 import Modal from "../components/Modal";
-import { anmieInfo } from "../atoms";
+import { anmieInfo, animeSearch } from "../atoms";
 import { useRecoilValue } from "recoil";
 const Wrapper = styled.div`
   height: 100%;
@@ -62,6 +63,12 @@ function App() {
     info ? ["animevocie", info] : "",
     () => info && getAnimeChara(info ? info : "")
   );
+
+  const infoSearch = useRecoilValue<any>(animeSearch);
+  const { data: animeSearchs } = useQuery(
+    infoSearch ? ["animeserach", infoSearch] : "",
+    () => infoSearch && getAnimeSearch(infoSearch ? infoSearch : "")
+  );
   return (
     <Wrapper>
       {isLoading && tl && bl && al ? (
@@ -82,6 +89,9 @@ function App() {
             </BannerWrap>
           </Banner>
           <div style={{ padding: "20px" }}>
+            {animeSearchs && (
+              <Slider data={animeSearchs} title="Search"></Slider>
+            )}
             <Slider data={aring} title="Aring animes"></Slider>
             <Slider data={topAnime} title="Top Animes"></Slider>
             <Slider data={animes} title="Animes"></Slider>

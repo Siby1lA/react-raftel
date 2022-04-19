@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { anmieInfo, animeSearch } from "../atoms";
+import { useSetRecoilState } from "recoil";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -102,9 +104,10 @@ function Header() {
   }, [scrollY, navAnimation]);
 
   const { register, handleSubmit } = useForm<IForm>();
-  const onValid = (data: IForm) => {
-    console.log(data);
-    navigate(`/search?keyword=${data.keyword}`);
+  const setAnimeData = useSetRecoilState(animeSearch);
+  const onValid = (data: any) => {
+    // navigate(`animes?q=${data.keyword}`);
+    setAnimeData(data.keyword);
   };
 
   const toggleSearch = () => {

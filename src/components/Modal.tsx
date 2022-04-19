@@ -8,15 +8,15 @@ import { anmieInfo } from "../atoms";
 const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.4);
   opacity: 0;
 `;
 
 const AnimeInfo = styled(motion.div)`
   position: absolute;
-  width: 80%;
+  width: 80vw;
   height: 85vh;
   left: 0;
   right: 0;
@@ -56,7 +56,7 @@ const CharaImg = styled(motion.div)<{ bgphoto: string }>`
   background-position: center center;
   background-size: cover;
   border-radius: 10px;
-  border: 2px solid #0a1622;
+  border: 2px solid white;
   margin: 10px;
 `;
 
@@ -82,7 +82,7 @@ const LeftContents = styled.div`
 `;
 
 const RightContes = styled.div`
-  width: fit-content;
+  width: 80vw;
 `;
 
 const Rank = styled.div`
@@ -111,11 +111,7 @@ const CharaVoice = styled.h3`
   font-weight: 400;
   font-size: 22px;
 `;
-const Chara = styled.div`
-  width: fit-content;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-`;
+const Chara = styled.div``;
 
 const Charas = styled.div`
   background-color: #152232;
@@ -126,6 +122,8 @@ const Charas = styled.div`
 
 const CharaImgWrap = styled.div`
   display: flex;
+  justify-content: space-around;
+  color: white;
 `;
 
 const CharaName = styled.div`
@@ -138,13 +136,16 @@ function Modal({ info, voice }: any) {
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
   const bigAnimeMatch: PathMatch<string> | null = useMatch("/animes/:id");
+
   const onOverlayClick = () => {
     navigate("/");
     document.body.style.overflow = "unset";
   };
   const data = useRecoilValue(anmieInfo);
+  // 검색해서 클릭한것도 추가해야함
   const clickedAnime =
     bigAnimeMatch?.params.id && String(data) === bigAnimeMatch.params.id;
+
   if (clickedAnime) {
     document.body.style.overflow = "hidden";
   }
@@ -158,7 +159,7 @@ function Modal({ info, voice }: any) {
             exit={{ opacity: 0 }}
           />
           <AnimeInfo
-            layoutId={bigAnimeMatch.params.id}
+            // layoutId={bigAnimeMatch.params.id}
             style={{ top: scrollY.get() + 80 }}
           >
             {clickedAnime && info && voice && (
@@ -238,7 +239,7 @@ function Modal({ info, voice }: any) {
 
                     <CharaVoice>Chara</CharaVoice>
                     <Chara>
-                      {voice &&
+                      {voice?.data &&
                         voice?.data.map((voice: any) => (
                           <Charas key={voice.character.mal_id}>
                             <CharaImgWrap>

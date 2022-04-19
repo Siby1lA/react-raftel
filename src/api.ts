@@ -74,6 +74,12 @@ export function getAnime() {
   return fetch(`${BASE_PATH}/anime`).then((response) => response.json());
 }
 
+export function getAnimeSearch(search: string) {
+  return fetch(
+    `${BASE_PATH}/anime?q=${search}&order_by=title&sort=asc&limit=10`
+  ).then((response) => response.json());
+}
+
 export function getAnimeInfo(animeId: string) {
   return fetch(`${BASE_PATH}/anime/${animeId}`).then((response) =>
     response.json()
