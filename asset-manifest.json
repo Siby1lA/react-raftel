@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/static/js/main.9489567e.js",
-    "index.html": "/index.html",
-    "main.9489567e.js.map": "/static/js/main.9489567e.js.map"
+    "main.js": "/react-raftel/static/js/main.b626c69f.js",
+    "index.html": "/react-raftel/index.html",
+    "main.b626c69f.js.map": "/react-raftel/static/js/main.b626c69f.js.map"
   },
   "entrypoints": [
-    "static/js/main.9489567e.js"
+    "static/js/main.b626c69f.js"
   ]
 }
