@@ -9,14 +9,14 @@ import {
   IGetCharaResult,
   IAnime,
   getAiringAnime,
-  getAnimeSearch,
 } from "../api";
 import styled from "styled-components";
 import Slider from "../components/Slider";
 import Modal from "../components/Modal";
-import { anmieInfo, animeSearch } from "../atoms";
+import { anmieInfo } from "../atoms";
 import { useRecoilValue } from "recoil";
-import SearchList from "../components/SearchList";
+
+import { Outlet } from "react-router-dom";
 const Wrapper = styled.div`
   height: 100%;
 `;
@@ -94,6 +94,7 @@ function App() {
           <Modal info={animeInfos} voice={animeVoices}></Modal>
         </>
       )}
+      <Outlet />
     </Wrapper>
   );
 }

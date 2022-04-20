@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";

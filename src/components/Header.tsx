@@ -130,9 +130,9 @@ function Header() {
   const onSubmit = (e: any) => {
     e.preventDefault();
   };
-  const onBlur = (e: any) => {
-    setAnimeData("");
-  };
+  // const onBlur = (e: any) => {
+  //   setAnimeData("");
+  // };
   const toggleSearch = () => {
     if (searchOpen) {
       // trigger the close animation
@@ -177,7 +177,7 @@ function Header() {
           </motion.svg>
           <Input
             onChange={onChange}
-            onBlur={onBlur}
+            // onBlur={onBlur}
             animate={inputAnimation}
             initial={{ scaleX: 0 }}
             transition={{ type: "linear" }}
