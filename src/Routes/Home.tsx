@@ -15,8 +15,6 @@ import Slider from "../components/Slider";
 import Modal from "../components/Modal";
 import { anmieInfo } from "../atoms";
 import { useRecoilValue } from "recoil";
-
-import { Outlet } from "react-router-dom";
 const Wrapper = styled.div`
   height: 100%;
 `;
@@ -94,7 +92,6 @@ function App() {
           <Modal info={animeInfos} voice={animeVoices}></Modal>
         </>
       )}
-      <Outlet />
     </Wrapper>
   );
 }
