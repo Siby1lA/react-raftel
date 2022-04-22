@@ -64,27 +64,33 @@ const SlideBtn = styled.div`
   }
 `;
 
-// const rowVariants = {
-//   hidden: {
-//     x: window.outerWidth + 5,
-//   },
-//   visible: {
-//     x: 0,
-//   },
-//   exit: {
-//     x: -window.outerWidth - 5,
-//   },
-// };
+const box = {
+  entry: (isBack: boolean) => ({
+    x: isBack ? -500 : 550,
+    opacity: 0,
+  }),
+  center: {
+    opacity: 1,
+    x: 0,
+  },
+  exit: (isBack: boolean) => ({
+    x: isBack ? 500 : -500,
+    opacity: 0,
+  }),
+};
 
 function Slider({ data, title }: any) {
+  const [back, setBack] = useState(false);
   const [index, setIndex] = useState(0);
   const incraseIndex = (val: string) => {
     if (val === "add") {
+      setBack(false);
       const totalAnimes = data?.data.length;
       const maxIndex = Math.floor(totalAnimes / offset);
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
     if (val === "min") {
+      setBack(true);
       setIndex((prev) => (prev === 0 ? 0 : prev - 1));
     }
   };
@@ -130,10 +136,11 @@ function Slider({ data, title }: any) {
         <AnimatePresence>
           <Row
             key={index}
-            // variants={rowVariants}
-            // initial="hidden"
-            // animate="visible"
-            // exit="exit"
+            custom={back}
+            variants={box}
+            initial="entry"
+            animate="center"
+            exit="exit"
             transition={{ type: "tween", duration: 1 }}
           >
             {data?.data &&

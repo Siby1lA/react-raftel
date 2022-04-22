@@ -21,6 +21,7 @@ const Disc = styled.div`
   color: white;
   width: 150px;
   height: 100px;
+  cursor: pointer;
 `;
 
 const Box = styled(motion.div)<{ bgphoto: string }>`
