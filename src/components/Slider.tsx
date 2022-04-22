@@ -66,16 +66,13 @@ const SlideBtn = styled.div`
 
 const box = {
   entry: (isBack: boolean) => ({
-    x: isBack ? -500 : 550,
-    opacity: 0,
+    x: isBack ? -window.outerWidth - 5 : window.outerWidth + 5,
   }),
   center: {
-    opacity: 1,
     x: 0,
   },
   exit: (isBack: boolean) => ({
-    x: isBack ? 500 : -500,
-    opacity: 0,
+    x: isBack ? window.outerWidth + 5 : -window.outerWidth - 5,
   }),
 };
 
@@ -141,7 +138,7 @@ function Slider({ data, title }: any) {
             initial="entry"
             animate="center"
             exit="exit"
-            transition={{ type: "tween", duration: 1 }}
+            transition={{ type: "tween", duration: 1.5 }}
           >
             {data?.data &&
               data?.data
