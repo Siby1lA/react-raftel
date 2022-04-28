@@ -98,7 +98,6 @@ function Slider({ data, title }: any) {
     navigate(`/animes/${animeId}`);
     setAnimeData(animeId);
   };
-
   return (
     <SliderWrap>
       <ListName>
@@ -145,6 +144,8 @@ function Slider({ data, title }: any) {
                 .slice(offset * index, offset * index + offset)
                 .map((anime: any) => (
                   <Box
+                    //같은 애니가 나올시 레이아웃아이디 겹침..
+                    layoutId={anime.mal_id + ""}
                     key={anime.mal_id}
                     onClick={() => onBoxClicked(anime.mal_id)}
                     bgphoto={anime.images.jpg.image_url}

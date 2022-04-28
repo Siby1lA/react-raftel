@@ -85,8 +85,8 @@ function App() {
             </BannerWrap>
           </Banner>
           <div style={{ padding: "20px" }}>
-            <Slider data={aring} title="Aring animes"></Slider>
-            <Slider data={topAnime} title="Top Animes"></Slider>
+            <Slider data={aring} title="Aring Animes"></Slider>
+            {/* <Slider data={topAnime} title="Top Animes"></Slider> */}
             <Slider data={animes} title="Animes"></Slider>
           </div>
           <Modal info={animeInfos} voice={animeVoices}></Modal>

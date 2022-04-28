@@ -148,6 +148,7 @@ function Modal({ info, voice }: any) {
   if (clickedAnime) {
     document.body.style.overflow = "hidden";
   }
+
   return (
     <AnimatePresence>
       {bigAnimeMatch ? (
@@ -158,8 +159,8 @@ function Modal({ info, voice }: any) {
             exit={{ opacity: 0 }}
           />
           <AnimeInfo
-            // layoutId={bigAnimeMatch.params.id}
             style={{ top: scrollY.get() + 80 }}
+            layoutId={bigAnimeMatch.params.id}
           >
             {clickedAnime && info && voice && (
               <ModalWrap>

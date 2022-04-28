@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
+import Nav from "./components/Nav";
 import Home from "./Routes/Home";
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
           <Route path="animes?q=:id" element={<Home />} />
         </Route>
       </Routes>
+      <Nav />
     </Router>
   );
 }
