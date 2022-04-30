@@ -1,9 +1,10 @@
 import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
+import { useEffect, useState } from "react";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { anmieInfo } from "../atoms";
-
+import { animeList } from "../atoms";
 const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
@@ -48,6 +49,34 @@ const Banner = styled.div<{ bgphoto: string }>`
   background-position: center center;
 `;
 
+const ModalPoster = styled(motion.div)<{ bgphoto: string }>`
+  height: 260px;
+  width: 190px;
+  border-radius: 10px;
+  border: 5px solid #152232;
+  background-image: url(${(props) => props.bgphoto});
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 30px;
+`;
+
+const ListBtn = styled.div`
+  background-color: tomato;
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  font-weight: 400;
+  &:hover {
+    color: #152232;
+    cursor: pointer;
+  }
+`;
 const CharaImg = styled(motion.div)<{ bgphoto: string }>`
   background-image: url(${(props) => props.bgphoto});
   height: 225px;
@@ -65,12 +94,17 @@ const AnimeContent = styled.div`
 `;
 
 const LeftContents = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 15px;
+  margin-bottom: 20px;
+`;
+const ValueList = styled.div`
   background-color: #152232;
   padding: 25px;
   height: fit-content;
   border-radius: 10px;
-  margin-right: 15px;
-  margin-bottom: 20px;
   div {
     margin-bottom: 10px;
     width: 150px;
@@ -131,7 +165,9 @@ const CharaName = styled.div`
   color: white;
 `;
 
+const Header = styled.div``;
 function Modal({ info, voice }: any) {
+  const [listBtn, setListBtn] = useState("Add to List");
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
   const bigAnimeMatch: PathMatch<string> | null = useMatch("/animes/:id");
@@ -148,6 +184,13 @@ function Modal({ info, voice }: any) {
   if (clickedAnime) {
     document.body.style.overflow = "hidden";
   }
+
+  const setAnimeList = useSetRecoilState(animeList);
+
+  const AddList = ({ data }: any) => {
+    setListBtn("Watching");
+    setAnimeList((oldData: any) => [{ data }, ...oldData]);
+  };
 
   return (
     <AnimatePresence>
@@ -179,7 +222,11 @@ function Modal({ info, voice }: any) {
                 </Banner>
                 <AnimeContent>
                   <LeftContents>
-                    <div>
+                    <ModalPoster bgphoto={info.data.images.jpg.image_url}>
+                      <ListBtn onClick={() => AddList(info)}>{listBtn}</ListBtn>
+                    </ModalPoster>
+
+                    <ValueList>
                       <div>
                         ⭐️ Score:
                         <span> {info.data.score}</span>
@@ -227,12 +274,17 @@ function Modal({ info, voice }: any) {
                           {info.data.studios[0] && info.data.studios[0].name}
                         </span>
                       </div>
-                    </div>
+                    </ValueList>
                   </LeftContents>
 
                   <RightContes>
-                    <Rank>Rank #{info.data.rank}</Rank>
-                    <Rank>{info.data.rating}</Rank>
+                    <Header>
+                      <div>
+                        <Rank>Rank #{info.data.rank}</Rank>
+                        <Rank>{info.data.rating}</Rank>
+                      </div>
+                    </Header>
+
                     <Title>{info.data.title}</Title>
 
                     <Synopsis>

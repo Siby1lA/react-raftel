@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
 import Home from "./Routes/Home";
+import Plan from "./Routes/Plan";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route path="animes/:id" element={<Home />} />
           <Route path="animes?q=:id" element={<Home />} />
         </Route>
+        <Route path="/plan" element={<Plan />}></Route>
       </Routes>
       <Nav />
     </Router>

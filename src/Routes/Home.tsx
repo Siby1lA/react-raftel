@@ -4,7 +4,6 @@ import {
   getAnimeInfo,
   getAnimeChara,
   getBannerAnime,
-  getTopAnime,
   IGetAnimeResult,
   IGetCharaResult,
   IAnime,
@@ -15,9 +14,7 @@ import Slider from "../components/Slider";
 import Modal from "../components/Modal";
 import { anmieInfo } from "../atoms";
 import { useRecoilValue } from "recoil";
-const Wrapper = styled.div`
-  height: 100%;
-`;
+const Wrapper = styled.div``;
 const Banner = styled.div<{ bgphoto: string }>`
   display: flex;
   align-items: center;
@@ -47,10 +44,10 @@ function App() {
     "airinganimes",
     getAiringAnime
   );
-  const { data: topAnime, isLoading: tl } = useQuery<IGetAnimeResult>(
-    "topanime",
-    getTopAnime
-  );
+  // const { data: topAnime, isLoading: tl } = useQuery<IGetAnimeResult>(
+  //   "topanime",
+  //   getTopAnime
+  // );
   const { data: bannerAnime, isLoading: bl } = useQuery(
     "banneranime",
     getBannerAnime
@@ -64,10 +61,9 @@ function App() {
     info ? ["animevocie", info] : "",
     () => info && getAnimeChara(info ? info : "")
   );
-
   return (
     <Wrapper>
-      {isLoading && tl && bl && al ? (
+      {isLoading && bl && al ? (
         <div>Loading...</div>
       ) : (
         <>
