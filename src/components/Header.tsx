@@ -6,6 +6,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useQuery } from "react-query";
 import { getAnimeSearch } from "../api";
 import SearchList from "./SearchList";
+import { Link } from "react-router-dom";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -26,6 +27,7 @@ const Col = styled.div`
 `;
 
 const Logo = styled(motion.h3)`
+  cursor: pointer;
   margin-right: 50px;
   font-size: 25px;
   font-weight: 400;
@@ -154,7 +156,9 @@ function Header() {
   return (
     <Nav variants={navVariants} animate={navAnimation} initial={"top"}>
       <Col>
-        <Logo>RAFTEL</Logo>
+        <Link to="/">
+          <Logo>RAFTEL</Logo>
+        </Link>
         <Items>
           <Item>Chara</Item>
           <Item>Song</Item>

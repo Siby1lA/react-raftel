@@ -95,7 +95,7 @@ function Slider({ data, title }: any) {
   const navigate = useNavigate();
   const setAnimeData = useSetRecoilState(anmieInfo);
   const onBoxClicked = (animeId: number) => {
-    navigate(`/animes/${animeId}`);
+    navigate(`/animes/${animeId}/${title}`);
     setAnimeData(animeId);
   };
   return (
@@ -145,7 +145,7 @@ function Slider({ data, title }: any) {
                 .map((anime: any) => (
                   <Box
                     //같은 애니가 나올시 레이아웃아이디 겹침..
-                    layoutId={anime.mal_id + ""}
+                    layoutId={anime.mal_id + title}
                     key={anime.mal_id}
                     onClick={() => onBoxClicked(anime.mal_id)}
                     bgphoto={anime.images.jpg.image_url}

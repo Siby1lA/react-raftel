@@ -170,14 +170,14 @@ function Modal({ info, voice }: any) {
   const [listBtn, setListBtn] = useState("Add to List");
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
-  const bigAnimeMatch: PathMatch<string> | null = useMatch("/animes/:id");
-
+  const bigAnimeMatch: PathMatch<string> | null =
+    useMatch("/animes/:id/:title");
+  let titles: any = bigAnimeMatch?.params.title;
   const onOverlayClick = () => {
     navigate("/");
     document.body.style.overflow = "unset";
   };
   const data = useRecoilValue(anmieInfo);
-  // 검색해서 클릭한것도 추가해야함
   const clickedAnime =
     bigAnimeMatch?.params.id && String(data) === bigAnimeMatch.params.id;
 
@@ -186,12 +186,20 @@ function Modal({ info, voice }: any) {
   }
 
   const setAnimeList = useSetRecoilState(animeList);
+  const AnimeList = useRecoilState(animeList);
 
   const AddList = ({ data }: any) => {
-    setListBtn("Watching");
-    setAnimeList((oldData: any) => [{ data }, ...oldData]);
+    let val = [];
+    for (let i = 0; i < AnimeList[0].length; i++) {
+      val.push(AnimeList[0][i].data.mal_id);
+    }
+    if (val.includes(data.mal_id)) {
+      setListBtn("Add To List");
+    } else {
+      setListBtn("Watching");
+      setAnimeList((oldData: any) => [{ data }, ...oldData]);
+    }
   };
-
   return (
     <AnimatePresence>
       {bigAnimeMatch ? (
@@ -203,7 +211,7 @@ function Modal({ info, voice }: any) {
           />
           <AnimeInfo
             style={{ top: scrollY.get() + 80 }}
-            layoutId={bigAnimeMatch.params.id}
+            layoutId={bigAnimeMatch.params.id + titles}
           >
             {clickedAnime && info && voice && (
               <ModalWrap>

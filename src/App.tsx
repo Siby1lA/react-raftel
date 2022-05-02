@@ -10,10 +10,10 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />}>
-          <Route path="animes/:id" element={<Home />} />
+          <Route path="animes/:id/:title" element={<Home />} />
           <Route path="animes?q=:id" element={<Home />} />
         </Route>
-        <Route path="/plan" element={<Plan />}></Route>
+        <Route path="/Plan" element={<Plan />}></Route>
       </Routes>
       <Nav />
     </Router>

@@ -8,6 +8,7 @@ import {
   IGetCharaResult,
   IAnime,
   getAiringAnime,
+  getTopAnime,
 } from "../api";
 import styled from "styled-components";
 import Slider from "../components/Slider";
@@ -44,10 +45,10 @@ function App() {
     "airinganimes",
     getAiringAnime
   );
-  // const { data: topAnime, isLoading: tl } = useQuery<IGetAnimeResult>(
-  //   "topanime",
-  //   getTopAnime
-  // );
+  const { data: topAnime, isLoading: tl } = useQuery<IGetAnimeResult>(
+    "topanime",
+    getTopAnime
+  );
   const { data: bannerAnime, isLoading: bl } = useQuery(
     "banneranime",
     getBannerAnime
@@ -82,7 +83,7 @@ function App() {
           </Banner>
           <div style={{ padding: "20px" }}>
             <Slider data={aring} title="Aring Animes"></Slider>
-            {/* <Slider data={topAnime} title="Top Animes"></Slider> */}
+            <Slider data={topAnime} title="Top Animes"></Slider>
             <Slider data={animes} title="Animes"></Slider>
           </div>
           <Modal info={animeInfos} voice={animeVoices}></Modal>

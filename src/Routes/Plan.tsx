@@ -1,6 +1,8 @@
-import { useRecoilValue } from "recoil";
+import { Navigate, PathMatch, useMatch, useNavigate } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { animeList } from "../atoms";
+import { animeList, anmieInfo } from "../atoms";
+import Modal from "../components/Modal";
 
 const Wrap = styled.div`
   height: 100%;
@@ -47,14 +49,24 @@ const Box = styled.div<{ bgphoto: string }>`
 `;
 function Plan() {
   const animeLists = useRecoilValue<any>(animeList);
-
+  const setAnimeData = useSetRecoilState(anmieInfo);
+  const navigate = useNavigate();
+  const bigAnimeMatch: PathMatch<string> | null =
+    useMatch("/animes/:id/:title");
+  const onBoxClicked = (animeId: number) => {
+    navigate(`/animes/${animeId}/plan`);
+    setAnimeData(animeId);
+  };
   return (
     <Wrap>
       <Header>My List</Header>
       <Main>
         {animeLists.map((anime: any) => (
           <BoxWarp key={anime.data.mal_id}>
-            <Box bgphoto={anime.data.images.jpg.image_url}>
+            <Box
+              onClick={() => onBoxClicked(anime.data.mal_id)}
+              bgphoto={anime.data.images.jpg.image_url}
+            >
               <h4>{anime.data.title}</h4>
             </Box>
           </BoxWarp>
