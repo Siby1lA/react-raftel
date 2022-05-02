@@ -51,8 +51,6 @@ function Plan() {
   const animeLists = useRecoilValue<any>(animeList);
   const setAnimeData = useSetRecoilState(anmieInfo);
   const navigate = useNavigate();
-  const bigAnimeMatch: PathMatch<string> | null =
-    useMatch("/animes/:id/:title");
   const onBoxClicked = (animeId: number) => {
     navigate(`/animes/${animeId}/plan`);
     setAnimeData(animeId);
@@ -67,7 +65,7 @@ function Plan() {
               onClick={() => onBoxClicked(anime.data.mal_id)}
               bgphoto={anime.data.images.jpg.image_url}
             >
-              <h4>{anime.data.title}</h4>
+              <h4>{anime.data.title_japanese}</h4>
             </Box>
           </BoxWarp>
         ))}

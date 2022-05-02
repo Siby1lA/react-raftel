@@ -38,7 +38,7 @@ function SearchList({ data }: any) {
   const navigate = useNavigate();
   const setAnimeData = useSetRecoilState(anmieInfo);
   const onBoxClicked = (animeId: number) => {
-    navigate(`/animes/${animeId}`);
+    navigate(`/animes/${animeId}/search`);
     setAnimeData(animeId);
   };
   return (
