@@ -62,14 +62,6 @@ export interface IChara {
   };
 }
 
-export interface IGetCharaResult {
-  data: [IChara];
-}
-
-export interface IGetAnimeResult {
-  data: [IAnime];
-}
-
 export function getAnime() {
   return fetch(`${BASE_PATH}/anime`).then((response) => response.json());
 }

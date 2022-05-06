@@ -15,6 +15,11 @@ export const animeSearch = atom({
   default: "",
 });
 
+export const animeListAdded = atom({
+  key: "animeListAdded",
+  default: "Add To List",
+});
+
 export const animeList = atom<any>({
   key: "data",
   default: [],

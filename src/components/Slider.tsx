@@ -82,7 +82,7 @@ function Slider({ data, title }: any) {
   const incraseIndex = (val: string) => {
     if (val === "add") {
       setBack(false);
-      const totalAnimes = data?.data.length;
+      const totalAnimes = data.length;
       const maxIndex = Math.floor(totalAnimes / offset);
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
@@ -139,8 +139,8 @@ function Slider({ data, title }: any) {
             exit="exit"
             transition={{ type: "tween", duration: 1.5 }}
           >
-            {data?.data &&
-              data?.data
+            {data &&
+              data
                 .slice(offset * index, offset * index + offset)
                 .map((anime: any) => (
                   <Box
@@ -150,7 +150,7 @@ function Slider({ data, title }: any) {
                     onClick={() => onBoxClicked(anime.mal_id)}
                     bgphoto={anime.images.jpg.image_url}
                   >
-                    <h4>{anime.title_japanese}</h4>
+                    <h4>{anime.title}</h4>
                   </Box>
                 ))}
           </Row>

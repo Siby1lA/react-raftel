@@ -4,11 +4,10 @@ import {
   getAnimeInfo,
   getAnimeChara,
   getBannerAnime,
-  IGetAnimeResult,
-  IGetCharaResult,
   IAnime,
   getAiringAnime,
   getTopAnime,
+  IChara,
 } from "../api";
 import styled from "styled-components";
 import Slider from "../components/Slider";
@@ -37,18 +36,16 @@ const Iframe = styled.iframe`
 `;
 
 function App() {
-  const { data: animes, isLoading } = useQuery<IGetAnimeResult>(
-    "animes",
-    getAnime
-  );
-  const { data: aring, isLoading: al } = useQuery<IGetAnimeResult>(
+  const { data: animes, isLoading } = useQuery<IAnime>("animes", getAnime);
+  const { data: aring, isLoading: al } = useQuery<IAnime>(
     "airinganimes",
     getAiringAnime
   );
-  const { data: topAnime, isLoading: tl } = useQuery<IGetAnimeResult>(
+  const { data: topAnime, isLoading: tl } = useQuery<IAnime>(
     "topanime",
     getTopAnime
   );
+
   const { data: bannerAnime, isLoading: bl } = useQuery(
     "banneranime",
     getBannerAnime
@@ -58,7 +55,7 @@ function App() {
     info ? ["animeinfo", info] : "",
     () => info && getAnimeInfo(info ? info : "")
   );
-  const { data: animeVoices } = useQuery<IGetCharaResult>(
+  const { data: animeVoices } = useQuery<IChara>(
     info ? ["animevocie", info] : "",
     () => info && getAnimeChara(info ? info : "")
   );
@@ -82,9 +79,9 @@ function App() {
             </BannerWrap>
           </Banner>
           <div style={{ padding: "20px" }}>
-            <Slider data={aring} title="放送中のアニメ"></Slider>
-            <Slider data={topAnime} title="人気のアニメ"></Slider>
-            <Slider data={animes} title="アニメ"></Slider>
+            <Slider data={aring?.data} title="放送中のアニメ"></Slider>
+            <Slider data={topAnime?.data} title="人気のアニメ"></Slider>
+            <Slider data={animes?.data} title={"アニメ"}></Slider>
           </div>
           <Modal info={animeInfos} voice={animeVoices}></Modal>
         </>

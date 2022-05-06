@@ -166,8 +166,9 @@ const CharaName = styled.div`
 `;
 
 const Header = styled.div``;
+let val: any = [];
 function Modal({ info, voice }: any) {
-  const [listBtn, setListBtn] = useState("Add to List");
+  const [listBtn, setListBtn] = useState("Add To List");
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
   const bigAnimeMatch: PathMatch<string> | null =
@@ -185,21 +186,29 @@ function Modal({ info, voice }: any) {
     document.body.style.overflow = "hidden";
   }
 
-  const setAnimeList = useSetRecoilState(animeList);
   const AnimeList = useRecoilState(animeList);
-
-  const AddList = ({ data }: any) => {
-    let val = [];
+  const setAnimeList = useSetRecoilState(animeList);
+  const AnimeListArray = () => {
     for (let i = 0; i < AnimeList[0].length; i++) {
       val.push(AnimeList[0][i].data.mal_id);
     }
+  };
+  const AddList = ({ data }: any) => {
+    AnimeListArray();
     if (val.includes(data.mal_id)) {
-      setListBtn("Add To List");
     } else {
       setListBtn("Watching");
       setAnimeList((oldData: any) => [{ data }, ...oldData]);
     }
   };
+  useEffect(() => {
+    AnimeListArray();
+    if (clickedAnime) {
+      if (val.includes(Number(bigAnimeMatch?.params.id)))
+        setListBtn("Watching");
+      else setListBtn("Add To List");
+    }
+  }, [clickedAnime]);
   return (
     <AnimatePresence>
       {bigAnimeMatch ? (
