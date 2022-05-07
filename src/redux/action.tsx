@@ -1,19 +1,14 @@
-export const setDogs = (dog: any) => ({
-  type: "SET_DOGS",
-  payload: dog,
-});
-
-export const setAnimeLists = (anilist: any) => ({
+export const setAnimeLists = (anilist: Object) => ({
   type: "SET_ANIMELIST",
   list: anilist,
 });
 
-export const setAnimeInfo = (aniinfo: any) => ({
+export const setAnimeInfo = (aniinfo: number) => ({
   type: "SET_ANIMEINFO",
   data: aniinfo,
 });
 
-export const setAnimeSearch = (aniserch: any) => ({
+export const setAnimeSearch = (aniserch: string) => ({
   type: "SET_ANIMESERACH",
   data: aniserch,
 });

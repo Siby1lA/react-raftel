@@ -5,16 +5,16 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 // import { anmieInfo } from "../atoms";
 import { setAnimeInfo } from "../redux/action";
-const mapStateToProps = (state: { anmieInfo: any }) => {
+const mapStateToProps = (state: { anmieInfo: number }) => {
   return {
     anmieInfo: state.anmieInfo,
   };
 };
 const mapDispatchToProps = (
-  dispatch: (arg0: { type: string; data: any }) => any
+  dispatch: (arg0: { type: string; data: number }) => object
 ) => {
   return {
-    setAnimeInfo: (anmieInfo: any) => dispatch(setAnimeInfo(anmieInfo)),
+    setAnimeInfo: (anmieInfo: number) => dispatch(setAnimeInfo(anmieInfo)),
   };
 };
 const Box = styled(motion.div)<{ bgphoto: string }>`

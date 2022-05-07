@@ -104,17 +104,18 @@ const navVariants = {
     backgroundColor: "#0A1622",
   },
 };
-const mapStateToProps = (state: { animeSearch: any }) => {
+const mapStateToProps = (state: { animeSearch: string }) => {
   return {
     animeSearch: state.animeSearch,
   };
 };
 
 const mapDispatchToProps = (
-  dispatch: (arg0: { type: string; data: any }) => any
+  dispatch: (arg0: { type: string; data: string }) => object
 ) => {
   return {
-    setAnimeSearch: (animeSearch: any) => dispatch(setAnimeSearch(animeSearch)),
+    setAnimeSearch: (animeSearch: string) =>
+      dispatch(setAnimeSearch(animeSearch)),
   };
 };
 function Header({ animeSearch, setAnimeSearch }: any) {
@@ -138,10 +139,10 @@ function Header({ animeSearch, setAnimeSearch }: any) {
     });
   }, [scrollY, navAnimation]);
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAnimeSearch(e.target.value);
   };
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
   // const onBlur = (e: any) => {

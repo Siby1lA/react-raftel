@@ -33,7 +33,7 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   background-size: cover;
   cursor: pointer;
 `;
-const mapStateToProps = (state: { anmieInfo: any; aniList: any }) => {
+const mapStateToProps = (state: { anmieInfo: number; aniList: object }) => {
   return {
     aniList: state.aniList,
     anmieInfo: state.anmieInfo,
@@ -41,10 +41,10 @@ const mapStateToProps = (state: { anmieInfo: any; aniList: any }) => {
 };
 
 const mapDispatchToProps = (
-  dispatch: (arg0: { type: string; data: any }) => any
+  dispatch: (arg0: { type: string; data: number }) => object
 ) => {
   return {
-    setAnimeInfo: (anmieInfo: any) => dispatch(setAnimeInfo(anmieInfo)),
+    setAnimeInfo: (anmieInfo: number) => dispatch(setAnimeInfo(anmieInfo)),
   };
 };
 function SearchList({ data, setAnimeInfo }: any) {

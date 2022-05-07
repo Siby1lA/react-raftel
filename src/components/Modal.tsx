@@ -4,17 +4,17 @@ import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { setAnimeLists } from "../redux/action";
-const mapStateToProps = (state: { anmieInfo: any; aniList: any }) => {
+const mapStateToProps = (state: { anmieInfo: number; aniList: object }) => {
   return {
     aniList: state.aniList,
     anmieInfo: state.anmieInfo,
   };
 };
 const mapDispatchToProps = (
-  dispatch: (arg0: { type: string; list: any }) => any
+  dispatch: (arg0: { type: string; list: object }) => object
 ) => {
   return {
-    setAnimeLists: (aniList: any) => dispatch(setAnimeLists(aniList)),
+    setAnimeLists: (aniList: object) => dispatch(setAnimeLists(aniList)),
   };
 };
 const Overlay = styled(motion.div)`
@@ -178,14 +178,14 @@ const CharaName = styled.div`
 `;
 
 const Header = styled.div``;
-let val: any = [];
+let val: any[] = [];
 function Modal({ info, voice, setAnimeLists, anmieInfo, aniList }: any) {
   const [listBtn, setListBtn] = useState("Add To List");
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
   const bigAnimeMatch: PathMatch<string> | null =
     useMatch("/animes/:id/:title");
-  let titles: any = bigAnimeMatch?.params.title;
+  let titles: string | undefined = bigAnimeMatch?.params.title;
   const onOverlayClick = () => {
     navigate("/");
     document.body.style.overflow = "unset";
@@ -228,7 +228,7 @@ function Modal({ info, voice, setAnimeLists, anmieInfo, aniList }: any) {
           />
           <AnimeInfos
             style={{ top: scrollY.get() + 80 }}
-            layoutId={bigAnimeMatch.params.id + titles}
+            layoutId={bigAnimeMatch.params.id + titles!}
           >
             {clickedAnime && info && voice && (
               <ModalWrap>
