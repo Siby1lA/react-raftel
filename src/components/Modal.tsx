@@ -1,10 +1,22 @@
 import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
 import { useEffect, useState } from "react";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { anmieInfo } from "../atoms";
-import { animeList } from "../atoms";
+import { connect } from "react-redux";
+import { setAnimeLists } from "../redux/action";
+const mapStateToProps = (state: { anmieInfo: any; aniList: any }) => {
+  return {
+    aniList: state.aniList,
+    anmieInfo: state.anmieInfo,
+  };
+};
+const mapDispatchToProps = (
+  dispatch: (arg0: { type: string; list: any }) => any
+) => {
+  return {
+    setAnimeLists: (aniList: any) => dispatch(setAnimeLists(aniList)),
+  };
+};
 const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
@@ -14,7 +26,7 @@ const Overlay = styled(motion.div)`
   opacity: 0;
 `;
 
-const AnimeInfo = styled(motion.div)`
+const AnimeInfos = styled(motion.div)`
   position: absolute;
   width: 80vw;
   height: 85vh;
@@ -167,7 +179,7 @@ const CharaName = styled.div`
 
 const Header = styled.div``;
 let val: any = [];
-function Modal({ info, voice }: any) {
+function Modal({ info, voice, setAnimeLists, anmieInfo, aniList }: any) {
   const [listBtn, setListBtn] = useState("Add To List");
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
@@ -178,19 +190,15 @@ function Modal({ info, voice }: any) {
     navigate("/");
     document.body.style.overflow = "unset";
   };
-  const data = useRecoilValue(anmieInfo);
   const clickedAnime =
-    bigAnimeMatch?.params.id && String(data) === bigAnimeMatch.params.id;
+    bigAnimeMatch?.params.id && String(anmieInfo) === bigAnimeMatch.params.id;
 
   if (clickedAnime) {
     document.body.style.overflow = "hidden";
   }
-
-  const AnimeList = useRecoilState(animeList);
-  const setAnimeList = useSetRecoilState(animeList);
   const AnimeListArray = () => {
-    for (let i = 0; i < AnimeList[0].length; i++) {
-      val.push(AnimeList[0][i].data.mal_id);
+    for (let i = 0; i < aniList.length; i++) {
+      val.push(aniList[i].mal_id);
     }
   };
   const AddList = ({ data }: any) => {
@@ -198,7 +206,7 @@ function Modal({ info, voice }: any) {
     if (val.includes(data.mal_id)) {
     } else {
       setListBtn("Watching");
-      setAnimeList((oldData: any) => [{ data }, ...oldData]);
+      setAnimeLists(data);
     }
   };
   useEffect(() => {
@@ -218,7 +226,7 @@ function Modal({ info, voice }: any) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           />
-          <AnimeInfo
+          <AnimeInfos
             style={{ top: scrollY.get() + 80 }}
             layoutId={bigAnimeMatch.params.id + titles}
           >
@@ -333,7 +341,6 @@ function Modal({ info, voice }: any) {
                                 {voice.voice_actors[0] &&
                                   voice.voice_actors[0].person.name}
                               </div>
-                              {/* {voice.role} */}
                             </CharaName>
                           </Charas>
                         ))}
@@ -342,10 +349,10 @@ function Modal({ info, voice }: any) {
                 </AnimeContent>
               </ModalWrap>
             )}
-          </AnimeInfo>
+          </AnimeInfos>
         </>
       ) : null}
     </AnimatePresence>
   );
 }
-export default Modal;
+export default connect(mapStateToProps, mapDispatchToProps)(Modal);

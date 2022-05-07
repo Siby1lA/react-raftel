@@ -1,9 +1,7 @@
-import { Navigate, PathMatch, useMatch, useNavigate } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { animeList, anmieInfo } from "../atoms";
-import Modal from "../components/Modal";
-
+import { connect } from "react-redux";
+import { setAnimeInfo } from "../redux/action";
 const Wrap = styled.div`
   height: 100%;
   margin-top: 65px;
@@ -47,25 +45,37 @@ const Box = styled.div<{ bgphoto: string }>`
     color: white;
   }
 `;
-function Plan() {
-  const animeLists = useRecoilValue<any>(animeList);
-  const setAnimeData = useSetRecoilState(anmieInfo);
+const mapStateToProps = (state: { anmieInfo: any; aniList: any }) => {
+  return {
+    aniList: state.aniList,
+    anmieInfo: state.anmieInfo,
+  };
+};
+
+const mapDispatchToProps = (
+  dispatch: (arg0: { type: string; data: any }) => any
+) => {
+  return {
+    setAnimeInfo: (anmieInfo: any) => dispatch(setAnimeInfo(anmieInfo)),
+  };
+};
+function Plan({ aniList, setAnimeInfo }: any) {
   const navigate = useNavigate();
   const onBoxClicked = (animeId: number) => {
     navigate(`/animes/${animeId}/plan`);
-    setAnimeData(animeId);
+    setAnimeInfo(animeId);
   };
   return (
     <Wrap>
       <Header>My List</Header>
       <Main>
-        {animeLists.map((anime: any) => (
-          <BoxWarp key={anime.data.mal_id}>
+        {aniList?.map((anime: any) => (
+          <BoxWarp key={anime.mal_id}>
             <Box
-              onClick={() => onBoxClicked(anime.data.mal_id)}
-              bgphoto={anime.data.images.jpg.image_url}
+              onClick={() => onBoxClicked(anime.mal_id)}
+              bgphoto={anime.images.jpg.image_url}
             >
-              <h4>{anime.data.title_japanese}</h4>
+              <h4>{anime.title_japanese}</h4>
             </Box>
           </BoxWarp>
         ))}
@@ -73,4 +83,4 @@ function Plan() {
     </Wrap>
   );
 }
-export default Plan;
+export default connect(mapStateToProps, mapDispatchToProps)(Plan);

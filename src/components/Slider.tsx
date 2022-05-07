@@ -1,10 +1,22 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { anmieInfo } from "../atoms";
-
+// import { anmieInfo } from "../atoms";
+import { setAnimeInfo } from "../redux/action";
+const mapStateToProps = (state: { anmieInfo: any }) => {
+  return {
+    anmieInfo: state.anmieInfo,
+  };
+};
+const mapDispatchToProps = (
+  dispatch: (arg0: { type: string; data: any }) => any
+) => {
+  return {
+    setAnimeInfo: (anmieInfo: any) => dispatch(setAnimeInfo(anmieInfo)),
+  };
+};
 const Box = styled(motion.div)<{ bgphoto: string }>`
   background-image: url(${(props) => props.bgphoto});
   height: 225px;
@@ -76,7 +88,7 @@ const box = {
   }),
 };
 
-function Slider({ data, title }: any) {
+function Slider({ data, title, setAnimeInfo }: any) {
   const [back, setBack] = useState(false);
   const [index, setIndex] = useState(0);
   const incraseIndex = (val: string) => {
@@ -93,10 +105,11 @@ function Slider({ data, title }: any) {
   };
   const offset = 8;
   const navigate = useNavigate();
-  const setAnimeData = useSetRecoilState(anmieInfo);
+  // const setAnimeData = useSetRecoilState(anmieInfo);
   const onBoxClicked = (animeId: number) => {
     navigate(`/animes/${animeId}/${title}`);
-    setAnimeData(animeId);
+    // setAnimeData(animeId);
+    setAnimeInfo(animeId);
   };
   return (
     <SliderWrap>
@@ -159,4 +172,4 @@ function Slider({ data, title }: any) {
     </SliderWrap>
   );
 }
-export default Slider;
+export default connect(mapStateToProps, mapDispatchToProps)(Slider);

@@ -12,8 +12,13 @@ import {
 import styled from "styled-components";
 import Slider from "../components/Slider";
 import Modal from "../components/Modal";
-import { anmieInfo } from "../atoms";
-import { useRecoilValue } from "recoil";
+import { connect } from "react-redux";
+const mapStateToProps = (state: { anmieInfo: any; aniList: any }) => {
+  return {
+    aniList: state.aniList,
+    anmieInfo: state.anmieInfo,
+  };
+};
 const Wrapper = styled.div``;
 const Banner = styled.div<{ bgphoto: string }>`
   display: flex;
@@ -35,7 +40,7 @@ const Iframe = styled.iframe`
   border: 1px solid white;
 `;
 
-function App() {
+function App({ anmieInfo }: any) {
   const { data: animes, isLoading } = useQuery<IAnime>("animes", getAnime);
   const { data: aring, isLoading: al } = useQuery<IAnime>(
     "airinganimes",
@@ -50,7 +55,7 @@ function App() {
     "banneranime",
     getBannerAnime
   );
-  const info = useRecoilValue<any>(anmieInfo);
+  const info = anmieInfo;
   const { data: animeInfos } = useQuery<IAnime>(
     info ? ["animeinfo", info] : "",
     () => info && getAnimeInfo(info ? info : "")
@@ -71,11 +76,11 @@ function App() {
             }
           >
             <BannerWrap>
-              <Iframe
+              {/* <Iframe
                 width="690"
                 height="390"
                 src={bannerAnime ? bannerAnime.data.trailer.embed_url : ""}
-              ></Iframe>
+              ></Iframe> */}
             </BannerWrap>
           </Banner>
           <div style={{ padding: "20px" }}>
@@ -90,4 +95,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(mapStateToProps)(App);

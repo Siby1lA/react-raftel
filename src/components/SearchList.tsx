@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
+import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { anmieInfo } from "../atoms";
+import { setAnimeInfo } from "../redux/action";
 
 const ListWrap = styled.div`
   background-color: #152232;
@@ -33,13 +33,25 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   background-size: cover;
   cursor: pointer;
 `;
+const mapStateToProps = (state: { anmieInfo: any; aniList: any }) => {
+  return {
+    aniList: state.aniList,
+    anmieInfo: state.anmieInfo,
+  };
+};
 
-function SearchList({ data }: any) {
+const mapDispatchToProps = (
+  dispatch: (arg0: { type: string; data: any }) => any
+) => {
+  return {
+    setAnimeInfo: (anmieInfo: any) => dispatch(setAnimeInfo(anmieInfo)),
+  };
+};
+function SearchList({ data, setAnimeInfo }: any) {
   const navigate = useNavigate();
-  const setAnimeData = useSetRecoilState(anmieInfo);
   const onBoxClicked = (animeId: number) => {
     navigate(`/animes/${animeId}/search`);
-    setAnimeData(animeId);
+    setAnimeInfo(animeId);
   };
   return (
     <ListWrap>
@@ -56,4 +68,4 @@ function SearchList({ data }: any) {
     </ListWrap>
   );
 }
-export default SearchList;
+export default connect(mapStateToProps, mapDispatchToProps)(SearchList);

@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { useEffect, useState } from "react";
-import { animeSearch } from "../atoms";
-import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useQuery } from "react-query";
 import { getAnimeSearch } from "../api";
 import SearchList from "./SearchList";
 import { Link } from "react-router-dom";
+import { setAnimeSearch } from "../redux/action";
+import { connect } from "react-redux";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -104,9 +104,21 @@ const navVariants = {
     backgroundColor: "#0A1622",
   },
 };
+const mapStateToProps = (state: { animeSearch: any }) => {
+  return {
+    animeSearch: state.animeSearch,
+  };
+};
 
-function Header() {
-  const infoSearch = useRecoilValue<any>(animeSearch);
+const mapDispatchToProps = (
+  dispatch: (arg0: { type: string; data: any }) => any
+) => {
+  return {
+    setAnimeSearch: (animeSearch: any) => dispatch(setAnimeSearch(animeSearch)),
+  };
+};
+function Header({ animeSearch, setAnimeSearch }: any) {
+  const infoSearch = animeSearch;
   const { data: animeSearchs } = useQuery(
     infoSearch ? ["animeserach", infoSearch] : "",
     () => infoSearch && getAnimeSearch(infoSearch ? infoSearch : "")
@@ -126,9 +138,8 @@ function Header() {
     });
   }, [scrollY, navAnimation]);
 
-  const setAnimeData = useSetRecoilState(animeSearch);
   const onChange = (e: any) => {
-    setAnimeData(e.target.value);
+    setAnimeSearch(e.target.value);
   };
   const onSubmit = (e: any) => {
     e.preventDefault();
@@ -204,4 +215,4 @@ function Header() {
     </Nav>
   );
 }
-export default Header;
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
