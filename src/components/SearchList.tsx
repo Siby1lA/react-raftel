@@ -62,7 +62,7 @@ function SearchList({ data, setAnimeInfo }: any) {
             onClick={() => onBoxClicked(anime.mal_id)}
           >
             <Box bgphoto={anime.images.jpg.image_url}></Box>
-            <Disc>{anime.title}</Disc>
+            <Disc>{anime.title_japanese}</Disc>
           </BoxWrap>
         ))}
     </ListWrap>

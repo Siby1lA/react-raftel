@@ -163,7 +163,7 @@ function Slider({ data, title, setAnimeInfo }: any) {
                     onClick={() => onBoxClicked(anime.mal_id)}
                     bgphoto={anime.images.jpg.image_url}
                   >
-                    <h4>{anime.title}</h4>
+                    <h4>{anime.title_japanese}</h4>
                   </Box>
                 ))}
           </Row>
