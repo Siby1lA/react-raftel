@@ -79,6 +79,8 @@ function App({ anmieInfo, setAnimeInfo }: any) {
   const [index, setIndex] = useState<number>(1);
   const [image, setImage] = useState<string>(images[0]);
   const [imageId, setImageId] = useState<number>(baanerId[0]);
+  const [timer, setTimer] = useState<number>(8000);
+
   const { data: animes, isLoading } = useQuery<IAnime>("animes", getAnime);
   const { data: aring, isLoading: al } = useQuery<IAnime>(
     "airinganimes",
@@ -99,22 +101,22 @@ function App({ anmieInfo, setAnimeInfo }: any) {
     () => info && getAnimeChara(info ? info : "")
   );
   const bannerClick = () => {
-    if (index === 2) {
-      setIndex(0);
-    } else setIndex(index + 1);
+    if (index === 2) setIndex(0);
+    else setIndex(index + 1);
     setImage(images[index]);
     setImageId(baanerId[index]);
+    setTimer(8000);
   };
   const bannerBackClick = () => {
     if (index === 0) setIndex(2);
     else setIndex(index - 1);
     setImage(images[index]);
     setImageId(baanerId[index]);
+    setTimer(8000);
   };
   useInterval(() => {
     bannerClick();
-    console.log(index);
-  }, 8000);
+  }, timer);
   const box = {
     entry: { opacity: 0.5 },
     center: { opacity: 1 },
@@ -127,7 +129,7 @@ function App({ anmieInfo, setAnimeInfo }: any) {
   };
   return (
     <Wrapper>
-      {isLoading && al ? (
+      {isLoading && al && tl ? (
         <div>Loading...</div>
       ) : (
         <>

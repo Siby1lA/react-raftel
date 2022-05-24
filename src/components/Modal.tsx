@@ -53,6 +53,7 @@ const Banner = styled.div<{ bgphoto: string }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   width: 100%;
   height: 50vh;
   background-image: linear-gradient(rgba(0, 0, 0, 0), #0a1622),
