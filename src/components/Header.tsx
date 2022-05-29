@@ -48,6 +48,9 @@ const Item = styled.li`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 18px;
   &:hover {
     color: ${(props) => props.theme.white.lighter};
   }
@@ -96,7 +99,12 @@ const SearchTyping = styled(motion.div)`
   margin-top: 52px;
   margin-right: 60px;
 `;
-
+const LoginBtn = styled.div`
+  margin-left: 15px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 18px;
+`;
 const navVariants = {
   top: {
     backgroundColor: "rgba(0, 0, 0, 0)",
@@ -213,6 +221,10 @@ function Header({ animeSearch, setAnimeSearch }: any) {
             <SearchList data={animeSearchs}></SearchList>
           </SearchTyping>
         ) : null}
+        <Link to="/login">
+          {" "}
+          <LoginBtn>Login</LoginBtn>
+        </Link>
       </Col>
     </Nav>
   );
