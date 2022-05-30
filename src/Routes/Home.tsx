@@ -13,11 +13,12 @@ import Slider from "../components/Slider";
 import Modal from "../components/Modal";
 import { connect } from "react-redux";
 import { baanerId, images } from "../images";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import useInterval from "../components/useInterval";
 import { useNavigate } from "react-router-dom";
 import { setAnimeInfo } from "../redux/action";
+import { authService } from "../firebase";
 const mapStateToProps = (state: { anmieInfo: any; aniList: any }) => {
   return {
     aniList: state.aniList,

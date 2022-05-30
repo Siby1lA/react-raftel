@@ -7,6 +7,7 @@ import SearchList from "./SearchList";
 import { Link } from "react-router-dom";
 import { setAnimeSearch } from "../redux/action";
 import { connect } from "react-redux";
+import { authService } from "../firebase";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -47,12 +48,15 @@ const Item = styled.li`
   position: relative;
   display: flex;
   justify-content: center;
-  flex-direction: column;
   cursor: pointer;
   font-weight: 400;
   font-size: 18px;
   &:hover {
     color: ${(props) => props.theme.white.lighter};
+  }
+  span {
+    color: gold;
+    margin-left: 10px;
   }
 `;
 
@@ -128,6 +132,18 @@ const mapDispatchToProps = (
   };
 };
 function Header({ animeSearch, setAnimeSearch }: any) {
+  const [init, setInit] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("");
+  useEffect(() => {
+    authService.onAuthStateChanged((user: any) => {
+      setUserName(user?.email.split("@")[0]);
+      if (user) setIsLoggedIn(true);
+      else setIsLoggedIn(false);
+      setInit(true);
+    });
+  }, []);
+
   const infoSearch = animeSearch;
   const { data: animeSearchs } = useQuery(
     infoSearch ? ["animeserach", infoSearch] : "",
@@ -174,6 +190,9 @@ function Header({ animeSearch, setAnimeSearch }: any) {
     }
     setSerachOpen((prev) => !prev);
   };
+  const onLogOutClick = () => {
+    authService.signOut();
+  };
   return (
     <Nav variants={navVariants} animate={navAnimation} initial={"top"}>
       <Col>
@@ -181,8 +200,13 @@ function Header({ animeSearch, setAnimeSearch }: any) {
           <Logo>RAFTEL</Logo>
         </Link>
         <Items>
-          <Item>Chara</Item>
-          <Item>Song</Item>
+          {isLoggedIn ? (
+            <Item>
+              Welcome! <span>{userName}</span>
+            </Item>
+          ) : (
+            "noLogin"
+          )}
         </Items>
       </Col>
       <Col>
@@ -221,10 +245,13 @@ function Header({ animeSearch, setAnimeSearch }: any) {
             <SearchList data={animeSearchs}></SearchList>
           </SearchTyping>
         ) : null}
-        <Link to="/login">
-          {" "}
-          <LoginBtn>Login</LoginBtn>
-        </Link>
+        {isLoggedIn ? (
+          <LoginBtn onClick={onLogOutClick}>Logout</LoginBtn>
+        ) : (
+          <Link to="/login">
+            <LoginBtn>Login</LoginBtn>
+          </Link>
+        )}
       </Col>
     </Nav>
   );

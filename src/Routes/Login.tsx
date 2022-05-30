@@ -2,6 +2,12 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
+import { authService } from "../firebase";
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
@@ -127,8 +133,22 @@ function Login() {
   const [seccess, Setseccess] = useState("");
   const navigate = useNavigate();
   const { register, handleSubmit, watch } = useForm<IForm>();
-  const onSubmit = ({ id, pw }: IForm) => {
-    // navigate("");
+  let data;
+  const onSubmit = async ({ id, pw }: IForm) => {
+    data = await signInWithEmailAndPassword(authService, id, pw);
+    console.log(data);
+    navigate("/");
+  };
+  const onSocialClick = async (event: any) => {
+    const {
+      target: { name },
+    } = event;
+    if (name === "google") {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(authService, provider);
+      //const credential = GoogleAuthProvider.credentialFromResult(result);
+      navigate("/");
+    }
   };
   return (
     <Wrapper>
@@ -164,8 +184,10 @@ function Login() {
           </Ul>
         </Joinwrap>
         <APIlogin>
-          <Kakaobtn>google Login</Kakaobtn>
-          <Naverbtn>github login</Naverbtn>
+          <Kakaobtn name="google" onClick={onSocialClick}>
+            Google Login
+          </Kakaobtn>
+          <Naverbtn>Github Login</Naverbtn>
         </APIlogin>
       </Box>
     </Wrapper>
