@@ -6,6 +6,7 @@ import Home from "./Routes/Home";
 import Join from "./Routes/Join";
 import Login from "./Routes/Login";
 import Plan from "./Routes/Plan";
+import Profile from "./Routes/Profile";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/plan" element={<Plan />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/join" element={<Join />}></Route>
+        <Route path="/profile" element={<Profile />}></Route>
       </Routes>
       <Nav />
     </Router>

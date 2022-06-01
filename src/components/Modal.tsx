@@ -4,10 +4,18 @@ import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { setAnimeLists } from "../redux/action";
-const mapStateToProps = (state: { anmieInfo: number; aniList: object }) => {
+import CommentInput from "./CommentInput";
+import CommentView from "./CommentView";
+
+const mapStateToProps = (state: {
+  anmieInfo: number;
+  aniList: object;
+  userinfo: any;
+}) => {
   return {
     aniList: state.aniList,
     anmieInfo: state.anmieInfo,
+    userinfo: state.userinfo,
   };
 };
 const mapDispatchToProps = (
@@ -152,18 +160,21 @@ const Synopsis = styled.div`
     font-size: 22px;
   }
 `;
-const CharaVoice = styled.h3`
-  margin-top: 15px;
+const ContentsTitle = styled.h3`
+  margin: 15px 0px;
   font-weight: 400;
   font-size: 22px;
 `;
-const Chara = styled.div``;
+const Chara = styled.div`
+  height: 50vh;
+  overflow: hidden;
+  overflow-y: scroll;
+`;
 
 const Charas = styled.div`
   background-color: #152232;
-  margin: 15px;
-  padding: 10px;
   border-radius: 10px;
+  margin-bottom: 10px;
 `;
 
 const CharaImgWrap = styled.div`
@@ -179,9 +190,18 @@ const CharaName = styled.div`
 `;
 
 const Header = styled.div``;
+
 let val: any[] = [];
-function Modal({ info, voice, setAnimeLists, anmieInfo, aniList }: any) {
+function Modal({
+  info,
+  voice,
+  setAnimeLists,
+  anmieInfo,
+  aniList,
+  userinfo,
+}: any) {
   const [listBtn, setListBtn] = useState("Add To List");
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
   const bigAnimeMatch: PathMatch<string> | null =
@@ -318,7 +338,7 @@ function Modal({ info, voice, setAnimeLists, anmieInfo, aniList }: any) {
                       <span>{info.data.synopsis}</span>
                     </Synopsis>
 
-                    <CharaVoice>Chara</CharaVoice>
+                    <ContentsTitle>Chara</ContentsTitle>
                     <Chara>
                       {voice?.data &&
                         voice?.data.map((voice: any) => (
@@ -346,6 +366,9 @@ function Modal({ info, voice, setAnimeLists, anmieInfo, aniList }: any) {
                           </Charas>
                         ))}
                     </Chara>
+                    <ContentsTitle>Comemnts</ContentsTitle>
+                    <CommentInput animeNum={anmieInfo} userinfo={userinfo} />
+                    <CommentView animeNum={anmieInfo} userinfo={userinfo} />
                   </RightContes>
                 </AnimeContent>
               </ModalWrap>

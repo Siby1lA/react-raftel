@@ -11,6 +11,7 @@ const initialState = {
   aniList: [],
   anmieInfo: 0,
   animeSearch: "",
+  userinfo: [],
 };
 const rootReducer = (state = initialState, action: any) => {
   switch (action.type) {
@@ -20,6 +21,8 @@ const rootReducer = (state = initialState, action: any) => {
       return { ...state, anmieInfo: action.data };
     case "SET_ANIMESERACH":
       return { ...state, animeSearch: action.data };
+    case "SET_USERINFO":
+      return { ...state, userinfo: action.data };
     default:
       return state;
   }

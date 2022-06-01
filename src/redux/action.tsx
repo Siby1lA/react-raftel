@@ -12,3 +12,8 @@ export const setAnimeSearch = (aniserch: string) => ({
   type: "SET_ANIMESERACH",
   data: aniserch,
 });
+
+export const setUserInfo = (userinfo: any) => ({
+  type: "SET_USERINFO",
+  data: userinfo,
+});

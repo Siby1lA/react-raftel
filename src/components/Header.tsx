@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { getAnimeSearch } from "../api";
 import SearchList from "./SearchList";
 import { Link } from "react-router-dom";
-import { setAnimeSearch } from "../redux/action";
+import { setAnimeSearch, setUserInfo } from "../redux/action";
 import { connect } from "react-redux";
 import { authService } from "../firebase";
 
@@ -117,9 +117,10 @@ const navVariants = {
     backgroundColor: "#0A1622",
   },
 };
-const mapStateToProps = (state: { animeSearch: string }) => {
+const mapStateToProps = (state: { animeSearch: string; userinfo: any }) => {
   return {
     animeSearch: state.animeSearch,
+    userinfo: state.userinfo,
   };
 };
 
@@ -129,14 +130,16 @@ const mapDispatchToProps = (
   return {
     setAnimeSearch: (animeSearch: string) =>
       dispatch(setAnimeSearch(animeSearch)),
+    setUserInfo: (userinfo: any) => dispatch(setUserInfo(userinfo)),
   };
 };
-function Header({ animeSearch, setAnimeSearch }: any) {
+function Header({ animeSearch, setAnimeSearch, setUserInfo }: any) {
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   useEffect(() => {
     authService.onAuthStateChanged((user: any) => {
+      setUserInfo(user);
       setUserName(user?.email.split("@")[0]);
       if (user) setIsLoggedIn(true);
       else setIsLoggedIn(false);
@@ -202,7 +205,10 @@ function Header({ animeSearch, setAnimeSearch }: any) {
         <Items>
           {isLoggedIn ? (
             <Item>
-              Welcome! <span>{userName}</span>
+              Welcome!
+              <Link to="/profile">
+                <span>{userName}</span>
+              </Link>
             </Item>
           ) : (
             "noLogin"
