@@ -1,3 +1,4 @@
+import { time } from "console";
 import {
   collection,
   deleteDoc,
@@ -60,7 +61,22 @@ function CommentView({ animeNum, userinfo }: any) {
       setCommentViews(commentArr);
     });
   }, []);
-
+  const dates = (num: number) => {
+    var timestamp = num;
+    var date = new Date(timestamp);
+    console.log(date.getMonth());
+    return (
+      date.getDate() +
+      "/" +
+      (date.getMonth() + 1) +
+      "/" +
+      date.getFullYear() +
+      " " +
+      date.getHours() +
+      ":" +
+      date.getMinutes()
+    );
+  };
   return (
     <>
       {commentViews.map((commentView: any) => (
@@ -75,7 +91,7 @@ function CommentView({ animeNum, userinfo }: any) {
               <CommentBox>
                 <UserName>
                   <div>{commentView.creator}</div>
-                  <div>Days</div>
+                  <div>{dates(commentView.createdAt)}</div>
                 </UserName>
                 <Comment>{commentView.text}</Comment>
               </CommentBox>
