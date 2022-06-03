@@ -61,6 +61,8 @@ function CommentView({ animeNum, userinfo }: any) {
       setCommentViews(commentArr);
     });
   }, []);
+  // console.log(commentViews.creator);
+  // console.log(userinfo.email);
   const dates = (num: number) => {
     var timestamp = num;
     var date = new Date(timestamp);
@@ -77,6 +79,7 @@ function CommentView({ animeNum, userinfo }: any) {
       date.getMinutes()
     );
   };
+  console.log(userinfo);
   return (
     <>
       {commentViews.map((commentView: any) => (
@@ -85,7 +88,9 @@ function CommentView({ animeNum, userinfo }: any) {
             <Comments>
               <UserImg
                 bgphoto={
-                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png"
+                  commentView.profileImg === null
+                    ? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png"
+                    : commentView.profileImg
                 }
               ></UserImg>
               <CommentBox>

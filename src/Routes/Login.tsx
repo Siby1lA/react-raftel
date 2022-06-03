@@ -187,7 +187,7 @@ function Login() {
           <Kakaobtn name="google" onClick={onSocialClick}>
             Google Login
           </Kakaobtn>
-          <Naverbtn>Github Login</Naverbtn>
+          {/* <Naverbtn>Github Login</Naverbtn> */}
         </APIlogin>
       </Box>
     </Wrapper>

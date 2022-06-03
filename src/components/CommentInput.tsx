@@ -71,6 +71,7 @@ function CommentInput({ animeNum, userinfo }: any) {
       text: comment,
       createdAt: Date.now(),
       animeNum: animeNum,
+      profileImg: userinfo.photoURL,
       attachmentUrl,
     };
     try {
@@ -89,7 +90,9 @@ function CommentInput({ animeNum, userinfo }: any) {
     <CommentsInput>
       <UserImg
         bgphoto={
-          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png"
+          userinfo.photoURL === null
+            ? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png"
+            : userinfo.photoURL
         }
       ></UserImg>
       <CommentBox>
