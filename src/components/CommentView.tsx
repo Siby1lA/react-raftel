@@ -58,15 +58,13 @@ function CommentView({ animeNum, userinfo }: any) {
         id: doc.id,
         ...doc.data(),
       }));
+      console.log(commentArr);
       setCommentViews(commentArr);
     });
   }, []);
-  // console.log(commentViews.creator);
-  // console.log(userinfo.email);
   const dates = (num: number) => {
     var timestamp = num;
     var date = new Date(timestamp);
-    console.log(date.getMonth());
     return (
       date.getDate() +
       "/" +
@@ -79,7 +77,6 @@ function CommentView({ animeNum, userinfo }: any) {
       date.getMinutes()
     );
   };
-  console.log(userinfo);
   return (
     <>
       {commentViews.map((commentView: any) => (

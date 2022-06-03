@@ -90,11 +90,12 @@ function CommentInput({ animeNum, userinfo }: any) {
     <CommentsInput>
       <UserImg
         bgphoto={
-          userinfo.photoURL === null
+          userinfo?.photoURL === null
             ? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png"
-            : userinfo.photoURL
+            : userinfo?.photoURL
         }
       ></UserImg>
+
       <CommentBox>
         <Comment>
           <form onSubmit={onsubmit}>

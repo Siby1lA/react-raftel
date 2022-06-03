@@ -367,7 +367,9 @@ function Modal({
                         ))}
                     </Chara>
                     <ContentsTitle>Comemnts</ContentsTitle>
+
                     <CommentInput animeNum={anmieInfo} userinfo={userinfo} />
+
                     <CommentView animeNum={anmieInfo} userinfo={userinfo} />
                   </RightContes>
                 </AnimeContent>

@@ -57,9 +57,13 @@ function Profile({ userinfo }: any) {
   return (
     <Wrap>
       <Header>Profile</Header>
-      <UserImg bgphoto={photoURL}></UserImg>
-      <input disabled={loading} type="file" onChange={handleChange} />
-      <button onClick={handleClick}>Update</button>
+      {userinfo && (
+        <>
+          <UserImg bgphoto={photoURL}></UserImg>
+          <input disabled={loading} type="file" onChange={handleChange} />
+          <button onClick={handleClick}>Update</button>
+        </>
+      )}
     </Wrap>
   );
 }
