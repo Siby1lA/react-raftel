@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { setAnimeInfo } from "../redux/action";
@@ -33,25 +33,13 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   background-size: cover;
   cursor: pointer;
 `;
-const mapStateToProps = (state: { anmieInfo: number; aniList: object }) => {
-  return {
-    aniList: state.aniList,
-    anmieInfo: state.anmieInfo,
-  };
-};
 
-const mapDispatchToProps = (
-  dispatch: (arg0: { type: string; data: number }) => object
-) => {
-  return {
-    setAnimeInfo: (anmieInfo: number) => dispatch(setAnimeInfo(anmieInfo)),
-  };
-};
-function SearchList({ data, setAnimeInfo }: any) {
+function SearchList({ data }: any) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const onBoxClicked = (animeId: number) => {
     navigate(`/animes/${animeId}/search`);
-    setAnimeInfo(animeId);
+    dispatch(setAnimeInfo(animeId));
   };
   return (
     <ListWrap>
@@ -68,4 +56,4 @@ function SearchList({ data, setAnimeInfo }: any) {
     </ListWrap>
   );
 }
-export default connect(mapStateToProps, mapDispatchToProps)(SearchList);
+export default SearchList;

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
@@ -130,7 +129,6 @@ interface IForm {
 }
 
 function Login() {
-  const [seccess, Setseccess] = useState("");
   const navigate = useNavigate();
   const { register, handleSubmit, watch } = useForm<IForm>();
   let data;
@@ -146,7 +144,6 @@ function Login() {
     if (name === "google") {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(authService, provider);
-      //const credential = GoogleAuthProvider.credentialFromResult(result);
       navigate("/");
     }
   };

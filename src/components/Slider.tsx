@@ -1,15 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-// import { anmieInfo } from "../atoms";
 import { setAnimeInfo } from "../redux/action";
-const mapStateToProps = (state: { anmieInfo: number }) => {
-  return {
-    anmieInfo: state.anmieInfo,
-  };
-};
+
 const mapDispatchToProps = (
   dispatch: (arg0: { type: string; data: number }) => object
 ) => {
@@ -88,7 +83,8 @@ const box = {
   }),
 };
 
-function Slider({ data, title, setAnimeInfo }: any) {
+function Slider({ data, title }: any) {
+  const dispatch = useDispatch();
   const [back, setBack] = useState(false);
   const [index, setIndex] = useState(0);
   const incraseIndex = (val: string) => {
@@ -105,11 +101,9 @@ function Slider({ data, title, setAnimeInfo }: any) {
   };
   const offset = 8;
   const navigate = useNavigate();
-  // const setAnimeData = useSetRecoilState(anmieInfo);
   const onBoxClicked = (animeId: number) => {
     navigate(`/animes/${animeId}/${title}`);
-    // setAnimeData(animeId);
-    setAnimeInfo(animeId);
+    dispatch(setAnimeInfo(animeId));
   };
   return (
     <SliderWrap>
@@ -172,4 +166,4 @@ function Slider({ data, title, setAnimeInfo }: any) {
     </SliderWrap>
   );
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Slider);
+export default Slider;

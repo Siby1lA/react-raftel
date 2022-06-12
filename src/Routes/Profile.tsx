@@ -1,7 +1,7 @@
 import { updateProfile } from "firebase/auth";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import styled from "styled-components";
 import { storageService, upload } from "../firebase";
 
@@ -28,13 +28,11 @@ const UserImg = styled.div<{ bgphoto: string }>`
   height: 50px;
   border-radius: 15px;
 `;
-const mapStateToProps = (state: { userinfo: any }) => {
-  return {
-    userinfo: state.userinfo,
-  };
-};
 
-function Profile({ userinfo }: any) {
+function Profile() {
+  const { userinfo } = useSelector((state: any) => ({
+    userinfo: state.userinfo,
+  }));
   const [photo, setPhoto] = useState<any>(null);
   const [photoURL, setPhotoURL] = useState(
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png"
@@ -67,4 +65,4 @@ function Profile({ userinfo }: any) {
     </Wrap>
   );
 }
-export default connect(mapStateToProps)(Profile);
+export default Profile;

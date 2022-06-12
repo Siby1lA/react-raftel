@@ -6,8 +6,8 @@ import { getAnimeSearch } from "../api";
 import SearchList from "./SearchList";
 import { Link } from "react-router-dom";
 import { setAnimeSearch, setUserInfo } from "../redux/action";
-import { connect } from "react-redux";
 import { authService } from "../firebase";
+import { useDispatch, useSelector } from "react-redux";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -117,29 +117,19 @@ const navVariants = {
     backgroundColor: "#0A1622",
   },
 };
-const mapStateToProps = (state: { animeSearch: string; userinfo: any }) => {
-  return {
+
+function Header() {
+  const dispatch = useDispatch();
+  const { animeSearch, userinfo } = useSelector((state: any) => ({
     animeSearch: state.animeSearch,
     userinfo: state.userinfo,
-  };
-};
-
-const mapDispatchToProps = (
-  dispatch: (arg0: { type: string; data: string }) => object
-) => {
-  return {
-    setAnimeSearch: (animeSearch: string) =>
-      dispatch(setAnimeSearch(animeSearch)),
-    setUserInfo: (userinfo: any) => dispatch(setUserInfo(userinfo)),
-  };
-};
-function Header({ animeSearch, setAnimeSearch, setUserInfo }: any) {
+  }));
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   useEffect(() => {
     authService.onAuthStateChanged((user: any) => {
-      setUserInfo(user);
+      dispatch(setUserInfo(user));
       setUserName(user?.email.split("@")[0]);
       if (user) setIsLoggedIn(true);
       else setIsLoggedIn(false);
@@ -168,7 +158,7 @@ function Header({ animeSearch, setAnimeSearch, setUserInfo }: any) {
   }, [scrollY, navAnimation]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAnimeSearch(e.target.value);
+    dispatch(setAnimeSearch(e.target.value));
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -262,4 +252,4 @@ function Header({ animeSearch, setAnimeSearch, setUserInfo }: any) {
     </Nav>
   );
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

@@ -11,26 +11,14 @@ import {
 import styled from "styled-components";
 import Slider from "../components/Slider";
 import Modal from "../components/Modal";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { baanerId, images } from "../images";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import useInterval from "../components/useInterval";
 import { useNavigate } from "react-router-dom";
 import { setAnimeInfo } from "../redux/action";
-const mapStateToProps = (state: { anmieInfo: any; aniList: any }) => {
-  return {
-    aniList: state.aniList,
-    anmieInfo: state.anmieInfo,
-  };
-};
-const mapDispatchToProps = (
-  dispatch: (arg0: { type: string; data: number }) => object
-) => {
-  return {
-    setAnimeInfo: (anmieInfo: number) => dispatch(setAnimeInfo(anmieInfo)),
-  };
-};
+
 const Wrapper = styled.div``;
 const Banner = styled(motion.div)<{ bgphoto: string }>`
   display: flex;
@@ -46,9 +34,6 @@ const BannerWrap = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-`;
-const Iframe = styled.iframe`
-  border: 1px solid white;
 `;
 const SlideBtn = styled.div`
   background-color: aliceblue;
@@ -75,7 +60,11 @@ const BannerClickCom = styled.div`
   margin: 0 auto;
   margin-top: 100px;
 `;
-function App({ anmieInfo, setAnimeInfo }: any) {
+function App() {
+  const dispatch = useDispatch();
+  const { anmieInfo } = useSelector((state: any) => ({
+    anmieInfo: state.anmieInfo,
+  }));
   const [index, setIndex] = useState<number>(1);
   const [image, setImage] = useState<string>(images[0]);
   const [imageId, setImageId] = useState<number>(baanerId[0]);
@@ -125,7 +114,7 @@ function App({ anmieInfo, setAnimeInfo }: any) {
   const navigate = useNavigate();
   const onBoxClicked = (animeId: number) => {
     navigate(`/animes/${animeId}/banner`);
-    setAnimeInfo(animeId);
+    dispatch(setAnimeInfo(animeId));
   };
   return (
     <Wrapper>
@@ -186,4 +175,4 @@ function App({ anmieInfo, setAnimeInfo }: any) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

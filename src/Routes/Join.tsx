@@ -1,12 +1,7 @@
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { authService } from "../firebase";
 const Wrapper = styled.div`
   height: 100vh;
@@ -100,7 +95,6 @@ function Join() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<ISignup>();
   let data;

@@ -1,6 +1,6 @@
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { connect } from "react-redux";
 import { setAnimeInfo } from "../redux/action";
 const Wrap = styled.div`
   height: 100%;
@@ -45,25 +45,16 @@ const Box = styled.div<{ bgphoto: string }>`
     color: white;
   }
 `;
-const mapStateToProps = (state: { anmieInfo: any; aniList: any }) => {
-  return {
-    aniList: state.aniList,
-    anmieInfo: state.anmieInfo,
-  };
-};
 
-const mapDispatchToProps = (
-  dispatch: (arg0: { type: string; data: any }) => any
-) => {
-  return {
-    setAnimeInfo: (anmieInfo: any) => dispatch(setAnimeInfo(anmieInfo)),
-  };
-};
-function Plan({ aniList, setAnimeInfo }: any) {
+function Plan() {
+  const dispatch = useDispatch();
+  const { aniList } = useSelector((state: any) => ({
+    aniList: state.aniList,
+  }));
   const navigate = useNavigate();
   const onBoxClicked = (animeId: number) => {
     navigate(`/animes/${animeId}/plan`);
-    setAnimeInfo(animeId);
+    dispatch(setAnimeInfo(animeId));
   };
   return (
     <Wrap>
@@ -83,4 +74,4 @@ function Plan({ aniList, setAnimeInfo }: any) {
     </Wrap>
   );
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Plan);
+export default Plan;

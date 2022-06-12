@@ -2,29 +2,11 @@ import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
 import { useEffect, useState } from "react";
 import { PathMatch, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setAnimeLists } from "../redux/action";
 import CommentInput from "./CommentInput";
 import CommentView from "./CommentView";
 
-const mapStateToProps = (state: {
-  anmieInfo: number;
-  aniList: object;
-  userinfo: any;
-}) => {
-  return {
-    aniList: state.aniList,
-    anmieInfo: state.anmieInfo,
-    userinfo: state.userinfo,
-  };
-};
-const mapDispatchToProps = (
-  dispatch: (arg0: { type: string; list: object }) => object
-) => {
-  return {
-    setAnimeLists: (aniList: object) => dispatch(setAnimeLists(aniList)),
-  };
-};
 const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
@@ -192,16 +174,16 @@ const CharaName = styled.div`
 const Header = styled.div``;
 
 let val: any[] = [];
-function Modal({
-  info,
-  voice,
-  setAnimeLists,
-  anmieInfo,
-  aniList,
-  userinfo,
-}: any) {
+function Modal({ info, voice }: any) {
+  const dispatch = useDispatch();
+  const { aniList, anmieInfo, userinfo } = useSelector((state: any) => ({
+    aniList: state.aniList,
+    anmieInfo: state.anmieInfo,
+    userinfo: state.userinfo,
+  }));
+
   const [listBtn, setListBtn] = useState("Add To List");
-  const [userName, setUserName] = useState("");
+
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
   const bigAnimeMatch: PathMatch<string> | null =
@@ -227,7 +209,7 @@ function Modal({
     if (val.includes(data.mal_id)) {
     } else {
       setListBtn("Watching");
-      setAnimeLists(data);
+      dispatch(setAnimeLists(data));
     }
   };
   useEffect(() => {
@@ -381,4 +363,4 @@ function Modal({
     </AnimatePresence>
   );
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Modal);
+export default Modal;
